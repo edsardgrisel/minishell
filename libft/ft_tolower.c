@@ -1,20 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_tolower.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/04/23 15:06:50 by egrisel           #+#    #+#             */
+/*   Updated: 2025/04/23 15:07:50 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-int	main(int argc, char *argv[])
+int	ft_tolower(int c)
 {
-	t_token	*tokens;
-
-	tokens = tokenize(argc, argv);
+	if (c >= 'A' && c <= 'Z')
+	{
+		c += 32;
+	}
+	return (c);
 }

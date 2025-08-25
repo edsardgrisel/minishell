@@ -1,20 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstlast_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/04/28 14:53:04 by egrisel           #+#    #+#             */
+/*   Updated: 2025/04/30 10:44:00 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int argc, char *argv[])
+t_list	*ft_lstlast(t_list *lst)
 {
-	t_token	*tokens;
-
-	tokens = tokenize(argc, argv);
+	if (!lst)
+	{
+		return (NULL);
+	}
+	while (lst->next)
+	{
+		lst = lst->next;
+	}
+	return (lst);
 }

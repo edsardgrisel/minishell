@@ -1,20 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/08/25 15:18:49 by egrisel           #+#    #+#             */
+/*   Updated: 2025/08/25 16:52:09 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	main(int argc, char *argv[])
+t_token	*tokenize(int argc, char *argv[])
 {
 	t_token	*tokens;
-
-	tokens = tokenize(argc, argv);
 }

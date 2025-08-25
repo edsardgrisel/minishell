@@ -1,20 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
+/*   Updated: 2025/08/25 16:56:53 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#define TOKENS_SIZE 16
 
-int	main(int argc, char *argv[])
+enum e_token_type
 {
-	t_token	*tokens;
+	WORD,
+	PIPE,
+};
 
-	tokens = tokenize(argc, argv);
-}
+typedef struct s_token
+{
+	e_token_type	type;
+	char			*value;
+}	t_token;
+
+typedef struct s_alloced_list
+{
+	void					*ptr;
+	struct s_alloced_list	*next;
+}	t_alloced_list;
+
+t_token	*tokenize(int argc, char *argv[]);

@@ -1,20 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstnew_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/04/27 19:15:31 by edsardgrise       #+#    #+#             */
+/*   Updated: 2025/04/30 10:44:04 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
+#include <stdlib.h>
 
-int	main(int argc, char *argv[])
+t_list	*ft_lstnew(void *content)
 {
-	t_token	*tokens;
+	t_list	*result;
 
-	tokens = tokenize(argc, argv);
+	result = malloc(sizeof(t_list));
+	if (!result)
+	{
+		return (NULL);
+	}
+	result->content = content;
+	result->next = NULL;
+	return (result);
 }

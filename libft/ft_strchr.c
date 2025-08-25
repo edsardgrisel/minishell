@@ -1,20 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/04/23 15:24:10 by egrisel           #+#    #+#             */
+/*   Updated: 2025/04/28 16:36:31 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stdlib.h>
 
-int	main(int argc, char *argv[])
+char	*ft_strchr(const char *s, int c)
 {
-	t_token	*tokens;
+	int		i;
+	char	character;
 
-	tokens = tokenize(argc, argv);
+	character = (char) c;
+	i = 0;
+	while (s[i] != '\0')
+	{
+		if (s[i] == character)
+		{
+			return ((char *)(&s[i]));
+		}
+		i++;
+	}
+	if (s[i] == character)
+	{
+		return ((char *)(&s[i]));
+	}
+	return (NULL);
 }

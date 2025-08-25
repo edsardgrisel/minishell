@@ -1,20 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/04/22 15:34:22 by egrisel           #+#    #+#             */
+/*   Updated: 2025/04/30 14:32:03 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stddef.h>
 
-int	main(int argc, char *argv[])
+size_t	ft_strlen(const char *str)
 {
-	t_token	*tokens;
+	size_t	i;
 
-	tokens = tokenize(argc, argv);
+	i = 0;
+	while (str[i])
+	{
+		i++;
+	}
+	return (i);
 }

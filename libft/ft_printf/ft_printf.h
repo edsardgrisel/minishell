@@ -1,20 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/05/01 14:03:05 by egrisel           #+#    #+#             */
+/*   Updated: 2025/05/16 17:28:45 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stdarg.h>
 
-int	main(int argc, char *argv[])
-{
-	t_token	*tokens;
-
-	tokens = tokenize(argc, argv);
-}
+int	ft_printf(const char *str, ...);
+int	print_char(va_list args);
+int	print_str(va_list args);
+int	print_lowercase_hex(va_list args);
+int	print_uppercase_hex(va_list args);
+int	print_number(va_list args);
+int	print_pointer(va_list args);
+int	print_unsigned_number(va_list args);

@@ -1,20 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/04/23 19:08:56 by edsardgrise       #+#    #+#             */
+/*   Updated: 2025/04/30 12:56:44 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stddef.h>
 
-int	main(int argc, char *argv[])
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	t_token	*tokens;
+	size_t			i;
+	unsigned char	*ptr1;
+	unsigned char	*ptr2;
 
-	tokens = tokenize(argc, argv);
+	ptr1 = (unsigned char *) s1;
+	ptr2 = (unsigned char *) s2;
+	if (n == 0)
+		return (0);
+	i = 0;
+	while (i < n)
+	{
+		if (ptr1[i] != ptr2[i])
+		{
+			return (ptr1[i] - ptr2[i]);
+		}
+		i++;
+	}
+	return (0);
 }

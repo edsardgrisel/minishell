@@ -1,20 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   print_str.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/05/07 20:45:00 by edsardgrise       #+#    #+#             */
+/*   Updated: 2025/05/16 17:31:19 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <unistd.h>
+#include <stdarg.h>
 
-int	main(int argc, char *argv[])
+int	print_str(va_list args)
 {
-	t_token	*tokens;
+	unsigned char	*str;
+	int				len;
+	int				chars_printed;
 
-	tokens = tokenize(argc, argv);
+	len = 0;
+	chars_printed = 0;
+	str = va_arg(args, unsigned char *);
+	if (str == NULL)
+	{
+		return (write(1, "(null)", 6));
+	}
+	while (str[len])
+		len++;
+	return (write(1, str, len));
 }

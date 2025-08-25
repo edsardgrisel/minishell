@@ -1,20 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/04/22 16:47:00 by egrisel           #+#    #+#             */
+/*   Updated: 2025/04/23 15:11:29 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stddef.h>
 
-int	main(int argc, char *argv[])
+void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	t_token	*tokens;
+	size_t	i;
+	char	*src_ptr;
+	char	*dest_ptr;
 
-	tokens = tokenize(argc, argv);
+	src_ptr = (char *)src;
+	dest_ptr = (char *)dest;
+	i = 0;
+	if (dest < src)
+	{
+		while (i < n)
+		{
+			dest_ptr[i] = src_ptr[i];
+			i++;
+		}
+	}
+	else if (dest > src)
+	{
+		while (i < n)
+		{
+			dest_ptr[n - i - 1] = src_ptr[n - i - 1];
+			i++;
+		}
+	}
+	return (dest);
 }

@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   isdigit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/04/22 13:27:28 by egrisel           #+#    #+#             */
+/*   Updated: 2025/04/22 13:32:15 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-int	main(int argc, char *argv[])
+int	ft_isdigit(int c)
 {
-	t_token	*tokens;
-
-	tokens = tokenize(argc, argv);
+	if ((c >= '0' && c <= '9'))
+	{
+		return (1);
+	}
+	else
+	{
+		return (0);
+	}
 }

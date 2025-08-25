@@ -1,20 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/04/22 16:24:03 by egrisel           #+#    #+#             */
+/*   Updated: 2025/04/30 14:20:13 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include <stddef.h>
 
-int	main(int argc, char *argv[])
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	t_token	*tokens;
+	size_t			i;
+	char unsigned	*dest_ptr;
+	char unsigned	*src_ptr;
 
-	tokens = tokenize(argc, argv);
+	if (n == 0)
+		return (dest);
+	dest_ptr = (unsigned char *)dest;
+	src_ptr = (unsigned char *)src;
+	i = 0;
+	while (i < n)
+	{
+		dest_ptr[i] = src_ptr[i];
+		i++;
+	}
+	return (dest);
 }

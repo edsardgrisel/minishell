@@ -1,20 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:50:05 by egrisel          ###   ########.fr       */
+/*   Created: 2025/04/28 15:48:51 by egrisel           #+#    #+#             */
+/*   Updated: 2025/04/30 10:46:27 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int argc, char *argv[])
+void	ft_lstclear(t_list **lst, void (*del)(void*))
 {
-	t_token	*tokens;
+	t_list	*cur_node;
+	t_list	*temp_node;
 
-	tokens = tokenize(argc, argv);
+	cur_node = *lst;
+	if (!cur_node)
+	{
+		return ;
+	}
+	while (cur_node)
+	{
+		temp_node = cur_node;
+		cur_node = cur_node->next;
+		ft_lstdelone(temp_node, del);
+	}
+	*lst = NULL;
 }
