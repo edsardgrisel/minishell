@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/25 16:56:53 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/08/27 14:04:02 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,16 @@ enum e_token_type
 
 typedef struct s_token
 {
-	e_token_type	type;
-	char			*value;
+	enum e_token_type	type;
+	char				*value;
 }	t_token;
+
+typedef struct s_token_list
+{
+	t_token	*tokens;
+	int		count;
+	int		capacity;
+}	t_token_list;
 
 typedef struct s_alloced_list
 {
@@ -30,4 +37,12 @@ typedef struct s_alloced_list
 	struct s_alloced_list	*next;
 }	t_alloced_list;
 
-t_token	*tokenize(int argc, char *argv[]);
+typedef struct s_ast
+{
+	struct s_ast	*left;
+	struct s_ast	*right;
+
+}	t_ast;
+
+t_token	*tokenize(char *str);
+void	free_double_pointer(void **ptr);
