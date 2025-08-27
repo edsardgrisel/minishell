@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/27 13:34:31 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/08/27 16:32:55 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	main(int argc, char *argv[], char *envp[])
 	(void)argv;
 	while (1)
 	{
-		if (minishell(envp) == EXIT_FAILURE)
+		if (minishell(envp) == -1)
 		{
 			return (EXIT_FAILURE);
 		}

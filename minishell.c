@@ -6,13 +6,15 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 13:14:20 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/27 14:02:47 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/08/27 16:39:30 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <readline/readline.h>
+#include <readline/history.h>
 
 /// @brief tokens alloced and set, ast calculated and tokens freed after.
 /// @param line 
@@ -27,6 +29,7 @@ t_ast	*create_ast(char *line)
 
 	
 	free(tokens);
+	return (NULL);
 }
 
 /// @brief Reads line and passes it to get_ast, after which line is freed.
@@ -39,11 +42,11 @@ int	minishell(char *envp[])
 
 	line = readline("minishell$ ");
 	if (line == NULL)
-		return (perror("readline error."), EXIT_FAILURE);
+		return (perror("readline error."), -1);
 	ast = create_ast(line);
 	free(line);
 	if (ast == NULL)
-		return (EXIT_FAILURE);
-	execution(ast);
-
+		return (-1);
+	// execution(ast);
+	return (0);
 }
