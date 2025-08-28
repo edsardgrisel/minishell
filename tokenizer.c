@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:18:49 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/28 15:33:39 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/08/28 17:25:11 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,15 @@ int	realloc_token_list_tokens(t_token_list *token_list)
 	return (0);
 }
 
+void	set_open_quotes(int *open_single_quote, int *open_double_quote,
+		char *str, int i)
+{
+	if (!(*open_single_quote) && str[i] == '\'')
+		*open_single_quote = 1;
+	if (!(*open_double_quote) && str[i] == '"')
+		*open_double_quote = 1;
+}
+
 /// @brief Will check if the next token is an operator, if it is, sets the 
 /// correct type and the value is left as null. if its a WORD, it will keep
 /// looping until the end of the WORD and then set token with the value of the
@@ -80,32 +89,40 @@ int	realloc_token_list_tokens(t_token_list *token_list)
 /// @param str 
 /// @param i 
 /// @param token 
-/// @return 0 on success, -1 on failure
-static int	set_next_token(char *str, int *i, t_token *token)
+/// @return 
+static void	set_next_token(char *str, int *i, t_token *token)
 {
 	int	starting_i;
+	int	open_single_quote;
+	int	open_double_quote;
 
-	while (is_space(str[*i]))
-		(*i)++;
+	open_single_quote = 0;
+	open_double_quote = 0;
 	token->type = get_token_type(&(str[*i]));
-	if (token->type == WORD)
+	if (token->type != WORD)
 	{
-		starting_i = *i;
-		while (str[*i])
-		{
-			if ((is_operator(str[*i]) || is_space(str[*i])))
-			{
-				token->value = ft_strndup(&(str[starting_i]), *i - starting_i);
-				if (token->value == NULL)
-					return (-1);
-			}
-			(*i)++;
-		}
+		(*i)++;
+		return ;
 	}
-	return (0);
+	starting_i = *i;
+	while (str[*i])
+	{
+		if (open_single_quote && str[*i] == '\'' || open_double_quote && str[*i] == '"')
+		{
+			(*i)++;
+			break;
+		}
+		if ((!open_single_quote && !open_double_quote) && (is_operator(str[*i]) || is_space(str[*i])))
+			break;
+		set_open_quotes(&open_single_quote, &open_double_quote, str, *i);
+		(*i)++;
+	}
+	token->value = ft_strndup(&(str[starting_i]), *i - starting_i);
 }
 
-/// @brief token list created to make for easy dynamic expansion
+/// @brief token list created to make for easy dynamic expansion. skips spaces
+/// and sets each token using the set_next_token() function. on strdup malloc
+/// failure in case of token type WORD, you free tokens and return NULL
 /// @param str is line read by readline
 /// @return t_tokens * list of tokens
 t_token	*tokenize(char *str)
@@ -124,9 +141,13 @@ t_token	*tokenize(char *str)
 	str_len = ft_strlen(str);
 	while (str_idx < str_len)
 	{
+		while (is_space(str[str_idx]))
+			(str_idx)++;
 		if (token_list.count == token_list.capacity - 1 && realloc_token_list_tokens(&token_list) == -1)
 				return (free(token_list.tokens), NULL);
-		if (set_next_token(str, &str_idx, &(token_list.tokens[token_list.count++])) == -1)
+		set_next_token(str, &str_idx, &(token_list.tokens[token_list.count++]));
+		if (token_list.tokens[token_list.count - 1].type == WORD
+				&& token_list.tokens[token_list.count - 1].value == NULL)
 			return (free(token_list.tokens), NULL);
 	}
 	return (token_list.tokens);
