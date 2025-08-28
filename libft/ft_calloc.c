@@ -6,13 +6,14 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/24 10:19:47 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/27 13:40:07 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/08/28 14:41:29 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 #include <stdint.h>
+#include <stdio.h>
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {

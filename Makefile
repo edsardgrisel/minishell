@@ -1,12 +1,13 @@
 NAME=minishell
 CC=cc
 CFLAGS=-Wall -Wextra -Werror -g
-SRCS= cleaup.c \
-	main.c \
+SRCS= main.c \
 	minishell.c \
 	parser.c \
 	ft_strndup.c \
 	tokenizer.c \
+
+OBJS = $(SRCS:.c=.o)
 
 HEADERS=-I ./libft
 
@@ -18,7 +19,10 @@ LIBFT_ARCHIVE=$(LIBFT_DIR)/libft.a
 all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT_ARCHIVE)
-	$(CC) $(OBJS) $(LIBFT_ARCHIVE) -o $(NAME)
+	$(CC) $(OBJS) $(LIBFT_ARCHIVE) -lreadline -o $(NAME)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 
 $(LIBFT_ARCHIVE):
 	$(MAKE) -s -C $(LIBFT_DIR) bonus

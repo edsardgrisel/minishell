@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:18:49 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/27 17:07:44 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/08/28 15:33:39 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,31 @@ int	is_space(char c)
 int	is_operator(char c)
 {
 	return (c == '|' || c == '<' || c == '>' || c == '&' || c == ';');
+}
+
+/// @brief Will return the enum e_token_type of the token. if no operator is
+/// found, the enum is WORD
+/// @param str str to check for operator
+/// @return the e_token_type
+enum e_token_type	get_token_type(char *str)
+{
+	if (str[0] == '\0')
+		return (NONE);
+	if (str[0] == '<')
+	{
+		if (str[1] == '<')
+			return (REDIRECT_HEREDOC);
+		return (REDIRECT_IN);
+	}
+	if (str[0] == '>')
+	{
+		if (str[1] == '>')
+			return (REDIRECT_APPEND);
+		return (REDIRECT_OUT);
+	}
+	if (str[0] == '|')
+		return (PIPE);
+	return (WORD);
 }
 
 /// @brief Reallocs the token_list->tokens to double the capacity.
@@ -48,72 +73,63 @@ int	realloc_token_list_tokens(t_token_list *token_list)
 	return (0);
 }
 
-char	*get_next_token(char *str, int *i)
+/// @brief Will check if the next token is an operator, if it is, sets the 
+/// correct type and the value is left as null. if its a WORD, it will keep
+/// looping until the end of the WORD and then set token with the value of the
+/// entire word (quotes included)
+/// @param str 
+/// @param i 
+/// @param token 
+/// @return 0 on success, -1 on failure
+static int	set_next_token(char *str, int *i, t_token *token)
 {
 	int	starting_i;
-	int	in_single_quote;
-	int	in_double_quote;
 
 	while (is_space(str[*i]))
 		(*i)++;
-
-	in_single_quote = 0;
-	in_double_quote = 0;
-	starting_i = *i;
-	while (1)
+	token->type = get_token_type(&(str[*i]));
+	if (token->type == WORD)
 	{
-		if (!in_double_quote && !in_single_quote && (is_operator(str[*i]) || is_space(str[*i])))
-			return (ft_strndup(&(str[starting_i]), *i - starting_i + 1));
-		(*i)++;
+		starting_i = *i;
+		while (str[*i])
+		{
+			if ((is_operator(str[*i]) || is_space(str[*i])))
+			{
+				token->value = ft_strndup(&(str[starting_i]), *i - starting_i);
+				if (token->value == NULL)
+					return (-1);
+			}
+			(*i)++;
+		}
 	}
+	return (0);
 }
-
-void	clear_token_list_tokens(t_token_list token_list)
-{
-	int	i;
-
-	i = 0;
-	while (i < token_list.count)
-	{
-		free(token_list.tokens[i].value);
-		i++;
-	}
-}
-
 
 /// @brief token list created to make for easy dynamic expansion
-/// @param str 
-/// @return 
+/// @param str is line read by readline
+/// @return t_tokens * list of tokens
 t_token	*tokenize(char *str)
 {
 	t_token_list	token_list;
 	int				str_idx;
-	int				tokens_idx;
 	int				str_len;
 	char			*cur_token;
 
-	token_list.tokens = ft_calloc(TOKENS_SIZE, sizeof(t_token));
+	token_list.tokens = ft_calloc(TOKENS_SIZE + 1, sizeof(t_token));
 	token_list.capacity = TOKENS_SIZE;
 	token_list.count = 0;
-
 	if (token_list.tokens == NULL)
 		return (NULL);
-	tokens_idx = 0;
 	str_idx = 0;
 	str_len = ft_strlen(str);
 	while (str_idx < str_len)
 	{
-		if (token_list.count == token_list.capacity)
-		{
-			if (realloc_token_list_tokens(&token_list) == -1)
+		if (token_list.count == token_list.capacity - 1 && realloc_token_list_tokens(&token_list) == -1)
 				return (free(token_list.tokens), NULL);
-		}
-		cur_token = get_next_token(str, &str_idx);
-		if (cur_token == NULL)
-			clear_token_list_tokens(token_list);
-		token_list.tokens[token_list.count++].value = cur_token; 
+		if (set_next_token(str, &str_idx, &(token_list.tokens[token_list.count++])) == -1)
+			return (free(token_list.tokens), NULL);
 	}
 	return (token_list.tokens);
 }
 
-// ls | grep a"
+// ls | grep a" 

@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 13:14:20 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/27 16:39:30 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/08/28 14:37:14 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int	minishell(char *envp[])
 	char	*line;
 	t_ast	*ast;
 
+	(void)envp;
 
 	line = readline("minishell$ ");
 	if (line == NULL)
