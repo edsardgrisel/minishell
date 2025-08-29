@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/28 15:16:53 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/08/29 13:13:46 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,14 @@ enum e_token_type
 	REDIRECT_OUT,
 	REDIRECT_HEREDOC,
 	REDIRECT_APPEND,
-	
+	UNSUPPORTED
 };
+
+typedef struct s_open_quote
+{
+	int	single_quote;
+	int	double_quote;
+}	t_open_quote;
 
 typedef struct s_token
 {

@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:18:49 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/28 17:25:11 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/08/29 13:18:55 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,8 @@ enum e_token_type	get_token_type(char *str)
 	}
 	if (str[0] == '|')
 		return (PIPE);
+	if (str[0] ==  '&' || str[0] == ';')
+		return (UNSUPPORTED);
 	return (WORD);
 }
 
@@ -93,11 +95,10 @@ void	set_open_quotes(int *open_single_quote, int *open_double_quote,
 static void	set_next_token(char *str, int *i, t_token *token)
 {
 	int	starting_i;
-	int	open_single_quote;
-	int	open_double_quote;
+	t_open_quote	open_quote;
 
-	open_single_quote = 0;
-	open_double_quote = 0;
+	open_quote.single_quote = 0;
+	open_quote.double_quote = 0;
 	token->type = get_token_type(&(str[*i]));
 	if (token->type != WORD)
 	{
@@ -107,14 +108,14 @@ static void	set_next_token(char *str, int *i, t_token *token)
 	starting_i = *i;
 	while (str[*i])
 	{
-		if (open_single_quote && str[*i] == '\'' || open_double_quote && str[*i] == '"')
+		if (open_quote.single_quote && str[*i] == '\'' || open_quote.double_quote && str[*i] == '"')
 		{
 			(*i)++;
 			break;
 		}
-		if ((!open_single_quote && !open_double_quote) && (is_operator(str[*i]) || is_space(str[*i])))
+		if ((!open_quote.single_quote && !open_quote.double_quote) && (is_operator(str[*i]) || is_space(str[*i])))
 			break;
-		set_open_quotes(&open_single_quote, &open_double_quote, str, *i);
+		set_open_quotes(&(open_quote.single_quote), &(open_quote.double_quote), str, *i);
 		(*i)++;
 	}
 	token->value = ft_strndup(&(str[starting_i]), *i - starting_i);
