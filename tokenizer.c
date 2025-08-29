@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:18:49 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/29 13:18:55 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/08/29 13:40:56 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,28 +84,17 @@ void	set_open_quotes(int *open_single_quote, int *open_double_quote,
 		*open_double_quote = 1;
 }
 
-/// @brief Will check if the next token is an operator, if it is, sets the 
-/// correct type and the value is left as null. if its a WORD, it will keep
-/// looping until the end of the WORD and then set token with the value of the
-/// entire word (quotes included)
+/// @brief loops until it reaches the end of the token. sets the *i to the index
+/// of the end of the token in str so that it can be strdup afterwards to set
+/// the WORD value
 /// @param str 
-/// @param i 
-/// @param token 
-/// @return 
-static void	set_next_token(char *str, int *i, t_token *token)
+/// @param i pointer to index in str
+void	loop_until_end_of_token(char *str, int *i)
 {
-	int	starting_i;
 	t_open_quote	open_quote;
 
 	open_quote.single_quote = 0;
 	open_quote.double_quote = 0;
-	token->type = get_token_type(&(str[*i]));
-	if (token->type != WORD)
-	{
-		(*i)++;
-		return ;
-	}
-	starting_i = *i;
 	while (str[*i])
 	{
 		if (open_quote.single_quote && str[*i] == '\'' || open_quote.double_quote && str[*i] == '"')
@@ -118,7 +107,37 @@ static void	set_next_token(char *str, int *i, t_token *token)
 		set_open_quotes(&(open_quote.single_quote), &(open_quote.double_quote), str, *i);
 		(*i)++;
 	}
-	token->value = ft_strndup(&(str[starting_i]), *i - starting_i);
+}
+
+
+/// @brief Will check if the next token is an operator, if it is, sets the 
+/// correct type and the value is left as null. if its a WORD, it will keep
+/// looping until the end of the WORD and then set token with the value of the
+/// entire word (quotes included)
+/// @param str 
+/// @param i 
+/// @param token 
+/// @return 
+static void	set_next_token(char *str, int *i, t_token *token)
+{
+	int	starting_i;
+
+	token->type = get_token_type(&(str[*i]));
+	if (token->type == WORD)
+	{
+		starting_i = *i;
+		loop_until_end_of_token(str, i);
+		token->value = ft_strndup(&(str[starting_i]), *i - starting_i);
+	}
+	else
+	{
+		if (token->type == PIPE || token->type == REDIRECT_IN
+			|| token->type == REDIRECT_IN)
+			(*i)++;
+		if (token->type == REDIRECT_APPEND || token->type == REDIRECT_HEREDOC)
+			(*i) += 2;
+	}
+
 }
 
 /// @brief token list created to make for easy dynamic expansion. skips spaces

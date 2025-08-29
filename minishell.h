@@ -6,12 +6,20 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/29 13:13:46 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/08/29 14:20:07 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#define TOKENS_SIZE 16
 
+
+
+#ifndef MINISHELL_H
+# define MINISHELL_H
+
+# define TOKENS_SIZE 8
+
+/// @brief NONE acts as a null terminator for t_token lists. so if list[i].type
+/// is NONE, it indicates that the previous token was the last element
 enum e_token_type
 {
 	NONE = 0,
@@ -61,3 +69,5 @@ t_token	*tokenize(char *str);
 void	free_double_pointer(void **ptr);
 char	*ft_strndup(char *str, int n);
 int	minishell(char *envp[]);
+
+#endif
