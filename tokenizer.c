@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:18:49 by egrisel           #+#    #+#             */
-/*   Updated: 2025/08/29 13:40:56 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/02 15:42:00 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,23 +55,23 @@ enum e_token_type	get_token_type(char *str)
 /// @brief Reallocs the token_list->tokens to double the capacity.
 /// @param token_list a pointer to the token_list in tokenize()
 /// @return 0 on success, -1 on failure
-int	realloc_token_list_tokens(t_token_list *token_list)
+int	realloc_token_list_tokens(t_token_list **token_list)
 {
 	t_token	*new_tokens;
 	int		i;
 
-	new_tokens = ft_calloc(token_list->capacity * 2, sizeof(t_token));
+	new_tokens = ft_calloc((*token_list)->capacity * 2, sizeof(t_token));
 	if (new_tokens == NULL)
 		return (-1);
 	i = 0;
-	while (i < token_list->capacity)
+	while (i < (*token_list)->capacity)
 	{
-		new_tokens[i] = token_list->tokens[i];
+		new_tokens[i] = (*token_list)->tokens[i];
 		i++;
 	}
-	free(token_list->tokens);
-	token_list->tokens = new_tokens;
-	token_list->capacity *= 2;
+	free((*token_list)->tokens);
+	(*token_list)->tokens = new_tokens;
+	(*token_list)->capacity *= 2;
 	return (0);
 }
 
@@ -132,12 +132,45 @@ static void	set_next_token(char *str, int *i, t_token *token)
 	else
 	{
 		if (token->type == PIPE || token->type == REDIRECT_IN
-			|| token->type == REDIRECT_IN)
+			|| token->type == REDIRECT_OUT)
 			(*i)++;
 		if (token->type == REDIRECT_APPEND || token->type == REDIRECT_HEREDOC)
 			(*i) += 2;
 	}
 
+}
+
+/// @brief will dynamically realloc token list. will read through str and fill
+/// the list with tokens
+/// @param str 
+/// @param token_list 
+/// @return -1 on realloc fail, strdup fail and UNSUPPORTED operator. else 0
+int	tokenize_loop(char *str, t_token_list *token_list)
+{
+	int				str_idx;
+	int				str_len;
+	t_token			*cur_token;
+
+	str_idx = 0;
+	str_len = ft_strlen(str);
+
+	while (str_idx < str_len)
+	{
+		while (is_space(str[str_idx]))
+			(str_idx)++;
+		if (token_list->count == token_list->capacity - 1 && realloc_token_list_tokens(&token_list) == -1)
+				return (-1);
+		cur_token = &(token_list->tokens[token_list->count++]);
+		set_next_token(str, &str_idx, cur_token);
+		if (cur_token->type == UNSUPPORTED)
+		{
+			printf("Error at: %s\n", cur_token->value);
+			return (-1);
+		}
+		if (cur_token->type == WORD && cur_token->value == NULL)
+			return (-1);
+	}
+	return (0);
 }
 
 /// @brief token list created to make for easy dynamic expansion. skips spaces
@@ -148,29 +181,16 @@ static void	set_next_token(char *str, int *i, t_token *token)
 t_token	*tokenize(char *str)
 {
 	t_token_list	token_list;
-	int				str_idx;
-	int				str_len;
 	char			*cur_token;
+	int				tokenize_loop_status;
 
 	token_list.tokens = ft_calloc(TOKENS_SIZE + 1, sizeof(t_token));
-	token_list.capacity = TOKENS_SIZE;
-	token_list.count = 0;
 	if (token_list.tokens == NULL)
 		return (NULL);
-	str_idx = 0;
-	str_len = ft_strlen(str);
-	while (str_idx < str_len)
-	{
-		while (is_space(str[str_idx]))
-			(str_idx)++;
-		if (token_list.count == token_list.capacity - 1 && realloc_token_list_tokens(&token_list) == -1)
-				return (free(token_list.tokens), NULL);
-		set_next_token(str, &str_idx, &(token_list.tokens[token_list.count++]));
-		if (token_list.tokens[token_list.count - 1].type == WORD
-				&& token_list.tokens[token_list.count - 1].value == NULL)
-			return (free(token_list.tokens), NULL);
-	}
+	token_list.capacity = TOKENS_SIZE;
+	token_list.count = 0;
+	tokenize_loop_status = tokenize_loop(str, &token_list);
+	if (tokenize_loop_status == -1)
+		return (free(token_list.tokens), NULL);
 	return (token_list.tokens);
 }
-
-// ls | grep a" 
