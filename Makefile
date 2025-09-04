@@ -3,13 +3,13 @@ CC=cc
 CFLAGS=-Wall -Wextra -Werror -g
 SRCS= main.c \
 	minishell.c \
-	parser.c \
+	parsing/parser.c \
 	ft_strndup.c \
-	tokenizer.c \
+	parsing/tokenizer.c \
 
 OBJS = $(SRCS:.c=.o)
 
-HEADERS=-I ./libft
+HEADERS=-I libft -I include
 
 LIBFT_DIR=./libft
 LIBFT_ARCHIVE=$(LIBFT_DIR)/libft.a

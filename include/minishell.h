@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/03 16:47:00 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/04 15:18:28 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,14 +22,14 @@
 /// is NONE, it indicates that the previous token was the last element
 typedef enum e_token_type
 {
-	NONE = 0,
-	WORD,
-	PIPE,
-	REDIRECT_IN,
-	REDIRECT_OUT,
-	REDIRECT_HEREDOC,
-	REDIRECT_APPEND,
-	UNSUPPORTED
+	TOKEN_NONE = 0,
+	TOKEN_WORD,
+	TOKEN_PIPE,
+	TOKEN_REDIRECT_IN,
+	TOKEN_REDIRECT_OUT,
+	TOKEN_REDIRECT_HEREDOC,
+	TOKEN_REDIRECT_APPEND,
+	TOKEN_UNSUPPORTED
 }	t_token_type;
 
 typedef struct s_open_quote
@@ -60,17 +60,19 @@ typedef struct s_alloced_list
 
 typedef enum e_ast_node_type
 {
-	COMMAND,
-	PIPE,
-	REDIRECT_IN,
-	REDIRECT_OUT,
-	REDIRECT_HEREDOC,
-	REDIRECT_APPEND,
+	NODE_COMMAND,
+	NODE_PIPE,
+	NODE_REDIRECT_IN,
+	NODE_REDIRECT_OUT,
+	NODE_REDIRECT_HEREDOC,
+	NODE_REDIRECT_APPEND,
 }	t_ast_node_type;
 
 typedef struct s_ast_node
 {
 	t_ast_node_type	node_type;
+	char			**command_and_args;
+	char			*redirect_file;
 	struct s_ast	*left;
 	struct s_ast	*right;
 
@@ -80,5 +82,7 @@ t_token	*tokenize(char *str);
 void	free_double_pointer(void **ptr);
 char	*ft_strndup(char *str, int n);
 int	minishell(char *envp[]);
+t_ast_node	*parse(t_token *tokens);
+
 
 #endif

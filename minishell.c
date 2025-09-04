@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 13:14:20 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/02 15:45:38 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/04 15:11:23 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@
 /// @brief tokens alloced and set, ast calculated and tokens freed after.
 /// @param line 
 /// @return the abstract syntax tree for exec
-t_ast	*create_ast(char *line)
+t_ast_node	*create_ast(char *line)
 {
-	t_token	*tokens;
-	t_ast	*ast;
+	t_token		*tokens;
+	t_ast_node	*ast;
 
 	tokens = tokenize(line);
 	if (tokens == NULL)
@@ -37,8 +37,8 @@ t_ast	*create_ast(char *line)
 /// @return 
 int	minishell(char *envp[])
 {
-	char	*line;
-	t_ast	*ast;
+	char		*line;
+	t_ast_node	*ast;
 
 	(void)envp;
 

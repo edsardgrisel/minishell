@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:18:49 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/02 15:42:00 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/04 15:24:16 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,24 +32,24 @@ int	is_operator(char c)
 enum e_token_type	get_token_type(char *str)
 {
 	if (str[0] == '\0')
-		return (NONE);
+		return (TOKEN_NONE);
 	if (str[0] == '<')
 	{
 		if (str[1] == '<')
-			return (REDIRECT_HEREDOC);
-		return (REDIRECT_IN);
+			return (TOKEN_REDIRECT_HEREDOC);
+		return (TOKEN_REDIRECT_IN);
 	}
 	if (str[0] == '>')
 	{
 		if (str[1] == '>')
-			return (REDIRECT_APPEND);
-		return (REDIRECT_OUT);
+			return (TOKEN_REDIRECT_APPEND);
+		return (TOKEN_REDIRECT_OUT);
 	}
 	if (str[0] == '|')
-		return (PIPE);
+		return (TOKEN_PIPE);
 	if (str[0] ==  '&' || str[0] == ';')
-		return (UNSUPPORTED);
-	return (WORD);
+		return (TOKEN_UNSUPPORTED);
+	return (TOKEN_WORD);
 }
 
 /// @brief Reallocs the token_list->tokens to double the capacity.
@@ -97,7 +97,7 @@ void	loop_until_end_of_token(char *str, int *i)
 	open_quote.double_quote = 0;
 	while (str[*i])
 	{
-		if (open_quote.single_quote && str[*i] == '\'' || open_quote.double_quote && str[*i] == '"')
+		if ((open_quote.single_quote && str[*i] == '\'') || (open_quote.double_quote && str[*i] == '"'))
 		{
 			(*i)++;
 			break;
@@ -123,7 +123,7 @@ static void	set_next_token(char *str, int *i, t_token *token)
 	int	starting_i;
 
 	token->type = get_token_type(&(str[*i]));
-	if (token->type == WORD)
+	if (token->type == TOKEN_WORD)
 	{
 		starting_i = *i;
 		loop_until_end_of_token(str, i);
@@ -131,10 +131,10 @@ static void	set_next_token(char *str, int *i, t_token *token)
 	}
 	else
 	{
-		if (token->type == PIPE || token->type == REDIRECT_IN
-			|| token->type == REDIRECT_OUT)
+		if (token->type == TOKEN_PIPE || token->type == TOKEN_REDIRECT_IN
+			|| token->type == TOKEN_REDIRECT_OUT)
 			(*i)++;
-		if (token->type == REDIRECT_APPEND || token->type == REDIRECT_HEREDOC)
+		if (token->type == TOKEN_REDIRECT_APPEND || token->type == TOKEN_REDIRECT_HEREDOC)
 			(*i) += 2;
 	}
 
@@ -162,12 +162,12 @@ int	tokenize_loop(char *str, t_token_list *token_list)
 				return (-1);
 		cur_token = &(token_list->tokens[token_list->count++]);
 		set_next_token(str, &str_idx, cur_token);
-		if (cur_token->type == UNSUPPORTED)
+		if (cur_token->type == TOKEN_UNSUPPORTED)
 		{
 			printf("Error at: %s\n", cur_token->value);
 			return (-1);
 		}
-		if (cur_token->type == WORD && cur_token->value == NULL)
+		if (cur_token->type == TOKEN_WORD && cur_token->value == NULL)
 			return (-1);
 	}
 	return (0);
@@ -181,7 +181,6 @@ int	tokenize_loop(char *str, t_token_list *token_list)
 t_token	*tokenize(char *str)
 {
 	t_token_list	token_list;
-	char			*cur_token;
 	int				tokenize_loop_status;
 
 	token_list.tokens = ft_calloc(TOKENS_SIZE + 1, sizeof(t_token));
