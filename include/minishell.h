@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/04 15:18:28 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/05 15:45:43 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef enum e_token_type
 	TOKEN_REDIRECT_OUT,
 	TOKEN_REDIRECT_HEREDOC,
 	TOKEN_REDIRECT_APPEND,
-	TOKEN_UNSUPPORTED
+	TOKEN_UNSUPPORTED,
 }	t_token_type;
 
 typedef struct s_open_quote
@@ -68,21 +68,32 @@ typedef enum e_ast_node_type
 	NODE_REDIRECT_APPEND,
 }	t_ast_node_type;
 
+/// @brief if node type is NODE_COMMAND, then command_and_args is a string with 
+/// spaces between command name and the args e.g "wc -l".
+/// If type is a redirect that requieres a redirect file, the filename as string
+/// is stored in redirect file
 typedef struct s_ast_node
 {
 	t_ast_node_type	node_type;
-	char			**command_and_args;
+	char			*command_and_args;
 	char			*redirect_file;
-	struct s_ast	*left;
-	struct s_ast	*right;
+	struct s_ast_node	*left;
+	struct s_ast_node	*right;
 
 }	t_ast_node;
 
-t_token	*tokenize(char *str);
-void	free_double_pointer(void **ptr);
-char	*ft_strndup(char *str, int n);
-int	minishell(char *envp[]);
+t_token		*tokenize(char *str);
+void		free_double_pointer(void **ptr);
+char		*ft_strndup(char *str, int n);
+int			minishell(char *envp[]);
 t_ast_node	*parse(t_token *tokens);
-
+t_ast_node	*parse_command(t_token *tokens, int *i);
+void		cleanup_tokens(t_token *tokens);
+char		*ft_strjoin_char(char const *s1, char const *s2, char c);
+t_ast_node	*create_node(
+	t_ast_node_type node_type,
+	char *command_and_args,
+	char *redirect_file
+);
 
 #endif

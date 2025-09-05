@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:18:49 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/04 15:24:16 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/05 13:07:16 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,13 +54,13 @@ enum e_token_type	get_token_type(char *str)
 
 /// @brief Reallocs the token_list->tokens to double the capacity.
 /// @param token_list a pointer to the token_list in tokenize()
-/// @return 0 on success, -1 on failure
+/// @return 0 on success, -1 on new tokens malloc failure
 int	realloc_token_list_tokens(t_token_list **token_list)
 {
 	t_token	*new_tokens;
 	int		i;
 
-	new_tokens = ft_calloc((*token_list)->capacity * 2, sizeof(t_token));
+	new_tokens = ft_calloc((*token_list)->capacity * 2 + 1, sizeof(t_token));
 	if (new_tokens == NULL)
 		return (-1);
 	i = 0;
