@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:06:21 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/05 15:35:41 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/05 16:58:08 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,15 +34,26 @@ t_ast_node	*create_node(
 // "ls > out.txt -l"
 
 /*
-executable = {redirect}, command, {redirect}
+executable = {redirect}, command
 */
 t_ast_node	*parse_executable(t_token *tokens, int *i)
 {
-	t_ast_node	*result;
+	t_ast_node	*root;
 	// skip optional redirect
-	result = parse_command(tokens, i);
-	// skip optional redirect
-	return (result);
+	root = parse_command(tokens, i);
+	return (root);
+}
+
+static t_ast_node	*add_pipe_parent_node(
+	t_ast_node *root,
+	t_token *cur_token,
+	t_token *next_node)
+{
+	t_ast_node	*parent;
+
+	parent = create_node(NODE_PIPE, NULL, next_node->value);
+	parent->left = root;
+	return (parent);
 }
 
 /*
@@ -50,14 +61,19 @@ pipeline = executable, {"|" executable}
 */
 t_ast_node	*parse_pipeline(t_token *tokens, int *i)
 {
-	t_ast_node	*result;
+	t_ast_node	*root;
 
-	result = parse_executable(tokens, i);
+	root = parse_executable(tokens, i);
+
+	if (tokens[*i].type == TOKEN_PIPE)
+	{
+
+	}
+	else
+		return (root);
 
 
-
-
-	return (result);
+	return (root);
 }
 // ["ls", "|", "wc"]
 
@@ -65,13 +81,13 @@ t_ast_node	*parse_pipeline(t_token *tokens, int *i)
 t_ast_node	*parse(t_token *tokens)
 {
 	int			i;
-	t_ast_node	*result;
+	t_ast_node	*root;
 
 	i = 0;
-	result = parse_pipeline(tokens, &i);
-	if (result == NULL)
+	root = parse_pipeline(tokens, &i);
+	if (root == NULL)
 		return (NULL);
 	if (tokens[i].type != TOKEN_NONE)
 		return (NULL);
-	return (result);
+	return (root);
 }
