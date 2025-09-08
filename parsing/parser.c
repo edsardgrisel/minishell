@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:06:21 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/08 14:05:31 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/08 15:40:10 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,19 +85,19 @@ t_ast_node	*parse_pipeline(t_token *tokens, int *i)
 
 	root = parse_executable(tokens, i);
 
-	// currently only works for single pipes in pipeline
-	if (tokens[*i].type == TOKEN_PIPE)
+	while (tokens[*i].type != TOKEN_NONE)
 	{
-		(*i)++;
-		parent_pipe = add_parent_pipe_node(root, tokens, i);
-		if (parent_pipe == NULL)
-			return (clear_ast(root), NULL);
-		return (parent_pipe);
+		if (tokens[*i].type == TOKEN_PIPE)
+		{
+			(*i)++;
+			parent_pipe = add_parent_pipe_node(root, tokens, i);
+			if (parent_pipe == NULL)
+				return (clear_ast(root), NULL);
+			root = parent_pipe;
+		}
+		else
+			break;
 	}
-	else
-		return (root);
-
-
 	return (root);
 }
 // ["ls", "|", "wc"]

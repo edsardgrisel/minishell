@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:41:12 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/08 13:25:03 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/08 16:33:57 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,11 @@ static t_ast_node	*add_redirect_parent_node(
 {
 	t_ast_node	*parent;
 	t_ast_node_type	node_type;
+	char			*redirect_file;
 
+	redirect_file = ft_strdup(next_node->value);
+	if (redirect_file == NULL)
+		return (NULL);
 	if (cur_token->type == TOKEN_REDIRECT_IN)
 		node_type = NODE_REDIRECT_IN;
 	else if (cur_token->type == TOKEN_REDIRECT_OUT)
@@ -60,7 +64,8 @@ static t_ast_node	*add_redirect_parent_node(
 		node_type = NODE_REDIRECT_HEREDOC;
 	else if (cur_token->type == TOKEN_REDIRECT_APPEND)
 		node_type = NODE_REDIRECT_APPEND;
-	parent = create_node(node_type, NULL, next_node->value);
+
+	parent = create_node(node_type, NULL, redirect_file);
 	if (parent == NULL)
 		return (NULL);
 	parent->left = root;
@@ -77,28 +82,28 @@ static t_ast_node	*add_redirect_parent_node(
 static t_ast_node	*set_command_and_args(t_token *tokens, int *i)
 {
 	t_ast_node	*root;
-	t_ast_node	*old_root;
+	t_ast_node	*parent_redirect;
 
 	root = create_node(NODE_COMMAND, NULL, NULL);
-	old_root = root;
+	// old_root = root;
 	if (root == NULL)
 		return (NULL);
 	while (tokens[*i].type != TOKEN_NONE && tokens[*i].type != TOKEN_PIPE)
 	{
 		if (tokens[*i].type == TOKEN_WORD)
 		{
-			if (append_word(old_root, tokens[*i].value) == -1)
+			if (append_word(root, tokens[*i].value) == -1)
 				return (free(root), NULL);
 		}
 		else
 		{
-			root = add_redirect_parent_node(root, &(tokens[*i]), &(tokens[++(*i)]));
-			if (root == NULL)
-				return (free(root), NULL);
+			parent_redirect = add_redirect_parent_node(root, &(tokens[*i]), &(tokens[++(*i)]));
+			if (parent_redirect == NULL)
+				return (clear_ast(root), NULL);
+			root = parent_redirect;
 		}
 		(*i)++;
 	}
-
 	return (root);
 }
 
