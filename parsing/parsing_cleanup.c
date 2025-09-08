@@ -6,12 +6,18 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:00:42 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/05 14:41:10 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/08 13:37:44 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
+
+void	clear_ast(t_ast_node *root)
+{
+	(void)root;
+	return ;
+}
 
 /// @brief frees as alloced value strings and then frees the whole tokens array
 /// @param tokens 

@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 13:14:20 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/05 14:07:42 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/08 13:39:46 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,9 @@ t_ast_node	*create_ast(char *line)
 	if (tokens == NULL)
 		return (NULL);
 	ast = parse(tokens);
-	
 	cleanup_tokens(tokens);
+	if (ast == NULL)
+		return (NULL);
 	return (NULL);
 }
 

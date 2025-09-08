@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:18:49 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/05 13:07:16 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/08 13:54:40 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,19 +153,18 @@ int	tokenize_loop(char *str, t_token_list *token_list)
 
 	str_idx = 0;
 	str_len = ft_strlen(str);
-
 	while (str_idx < str_len)
 	{
 		while (is_space(str[str_idx]))
 			(str_idx)++;
 		if (token_list->count == token_list->capacity - 1 && realloc_token_list_tokens(&token_list) == -1)
-				return (-1);
+				return (cleanup_tokens(token_list->tokens), -1);
 		cur_token = &(token_list->tokens[token_list->count++]);
 		set_next_token(str, &str_idx, cur_token);
 		if (cur_token->type == TOKEN_UNSUPPORTED)
 		{
 			printf("Error at: %s\n", cur_token->value);
-			return (-1);
+			return (cleanup_tokens(token_list->tokens), -1);
 		}
 		if (cur_token->type == TOKEN_WORD && cur_token->value == NULL)
 			return (-1);

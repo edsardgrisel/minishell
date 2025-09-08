@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:41:12 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/05 16:26:37 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/08 13:25:03 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,8 @@ static t_ast_node	*add_redirect_parent_node(
 	else if (cur_token->type == TOKEN_REDIRECT_APPEND)
 		node_type = NODE_REDIRECT_APPEND;
 	parent = create_node(node_type, NULL, next_node->value);
+	if (parent == NULL)
+		return (NULL);
 	parent->left = root;
 	return (parent);
 }
@@ -86,11 +88,13 @@ static t_ast_node	*set_command_and_args(t_token *tokens, int *i)
 		if (tokens[*i].type == TOKEN_WORD)
 		{
 			if (append_word(old_root, tokens[*i].value) == -1)
-				return (NULL);
+				return (free(root), NULL);
 		}
 		else
 		{
 			root = add_redirect_parent_node(root, &(tokens[*i]), &(tokens[++(*i)]));
+			if (root == NULL)
+				return (free(root), NULL);
 		}
 		(*i)++;
 	}

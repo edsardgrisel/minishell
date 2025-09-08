@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/05 15:45:43 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/08 14:24:09 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,8 @@ t_ast_node	*create_node(
 	char *command_and_args,
 	char *redirect_file
 );
+void	clear_ast(t_ast_node *root);
+t_ast_node	*parse_pipeline(t_token *tokens, int *i);
+
 
 #endif
