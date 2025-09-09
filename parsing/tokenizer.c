@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:18:49 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 10:35:38 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/09 11:28:38 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,10 +78,7 @@ int	realloc_token_list_tokens(t_token_list **token_list)
 void	set_open_quotes(int *open_single_quote, int *open_double_quote,
 		char *str, int i)
 {
-	if (!(*open_single_quote) && str[i] == '\'')
-		*open_single_quote = 1;
-	if (!(*open_double_quote) && str[i] == '"')
-		*open_double_quote = 1;
+
 }
 
 /// @brief loops until it reaches the end of the token. sets the *i to the index
@@ -91,20 +88,25 @@ void	set_open_quotes(int *open_single_quote, int *open_double_quote,
 /// @param i pointer to index in str
 void	loop_until_end_of_token(char *str, int *i)
 {
-	t_open_quote	open_quote;
+	int	in_single_quote;
+	int	in_double_quote;
 
-	open_quote.single_quote = 0;
-	open_quote.double_quote = 0;
+	in_single_quote = 0;
+	in_double_quote = 0;
 	while (str[*i])
 	{
-		if ((open_quote.single_quote && str[*i] == '\'') || (open_quote.double_quote && str[*i] == '"'))
+		if ((in_single_quote && str[*i] == '\'' && !in_double_quote)
+			|| (in_double_quote && str[*i] == '"' && !in_single_quote))
 		{
 			(*i)++;
 			break;
 		}
-		if ((!open_quote.single_quote && !open_quote.double_quote) && (is_operator(str[*i]) || is_space(str[*i])))
+		if ((!in_single_quote && !in_double_quote) && (is_operator(str[*i]) || is_space(str[*i])))
 			break;
-		set_open_quotes(&(open_quote.single_quote), &(open_quote.double_quote), str, *i);
+		if (!in_single_quote && str[*i] == '\'')
+			in_single_quote = 1;
+		if (!in_double_quote && str[*i] == '"')
+			in_double_quote = 1;
 		(*i)++;
 	}
 }
@@ -175,6 +177,9 @@ int	tokenize_loop(char *str, t_token_list *token_list)
 /// @brief token list created to make for easy dynamic expansion. skips spaces
 /// and sets each token using the set_next_token() function. on strdup malloc
 /// failure in case of token type WORD, you free tokens and return NULL
+/// Note: all quotes are kept in token strings. e.g second token of command
+/// echo "hello"
+/// with have string value of "hello" where the first and last char are "
 /// @param str is line read by readline
 /// @return t_tokens * list of tokens
 t_token	*tokenize(char *str)

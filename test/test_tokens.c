@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 16:39:38 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/08 16:03:40 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/09 11:19:08 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,46 @@ static void	test_tokenize8(void)
 
 }
 
+static void	test_tokenize9(void)
+{
+	printf("%s\n", __func__);
+
+	t_token tokens_exp[11] = {
+		{TOKEN_WORD, "echo"},
+		{TOKEN_WORD, "\"1\""},
+		{TOKEN_NONE, NULL},
+	};
+	test_tokenize_helper("echo \"1\"", tokens_exp);
+	test_tokenize_helper("echo   \"1\"", tokens_exp);
+
+}
+
+static void	test_tokenize10(void)
+{
+	printf("%s\n", __func__);
+
+	t_token tokens_exp[11] = {
+		{TOKEN_WORD, "echo"},
+		{TOKEN_WORD, "'\"1\"'"},
+		{TOKEN_NONE, NULL},
+	};
+	test_tokenize_helper("echo '\"1\"'", tokens_exp);
+	test_tokenize_helper("echo   '\"1\"'", tokens_exp);
+}
+
+// non closed quotes
+static void	test_tokenize11(void)
+{
+	printf("%s\n", __func__);
+
+	t_token tokens_exp[11] = {
+		{TOKEN_WORD, "echo"},
+		{TOKEN_WORD, "\"'1\""},
+		{TOKEN_NONE, NULL},
+	};
+	test_tokenize_helper("echo \"'1\"", tokens_exp);
+}
+
 // if type is not word, value doesnt matter.
 void	test_tokenize()
 {
@@ -187,6 +227,12 @@ void	test_tokenize()
 	test_tokenize6();
 	test_tokenize7();
 	test_tokenize8();
+	test_tokenize9();
+	test_tokenize10();
+	test_tokenize11();
+
+
+
 
 
 
