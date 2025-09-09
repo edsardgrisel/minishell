@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 13:14:20 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/08 16:08:24 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/09 10:51:02 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ t_ast_node	*create_ast(char *line)
 
 /// @brief Reads line and passes it to get_ast, after which line is freed.
 /// @return 
-int	minishell(char *envp[])
+int	minishell(char *envp[], t_minishell_info *minishell_info)
 {
 	char		*line;
 	t_ast_node	*ast;

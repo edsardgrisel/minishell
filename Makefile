@@ -3,9 +3,13 @@ CC=cc
 CFLAGS=-Wall -Wextra -Werror -g
 SRCS= main.c \
 	minishell.c \
-	parsing/parser.c \
 	ft_strndup.c \
+	ft_strjoin_char.c \
+	parsing/parser.c \
 	parsing/tokenizer.c \
+	parsing/parse_command.c \
+	parsing/parsing_cleanup.c \
+
 
 OBJS = $(SRCS:.c=.o)
 

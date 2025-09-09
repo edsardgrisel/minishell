@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/08 14:24:09 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/09 10:43:50 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ typedef enum e_token_type
 	TOKEN_REDIRECT_OUT,
 	TOKEN_REDIRECT_HEREDOC,
 	TOKEN_REDIRECT_APPEND,
-	TOKEN_UNSUPPORTED,
+	// TOKEN_UNSUPPORTED,
 }	t_token_type;
 
 typedef struct s_open_quote
@@ -82,10 +82,15 @@ typedef struct s_ast_node
 
 }	t_ast_node;
 
+typedef struct s_minishell_info
+{
+	int	cur_exit_code;
+}	t_minishell_info;
+
 t_token		*tokenize(char *str);
 void		free_double_pointer(void **ptr);
 char		*ft_strndup(char *str, int n);
-int			minishell(char *envp[]);
+int			minishell(char *envp[], t_minishell_info *minishell_info);
 t_ast_node	*parse(t_token *tokens);
 t_ast_node	*parse_command(t_token *tokens, int *i);
 void		cleanup_tokens(t_token *tokens);

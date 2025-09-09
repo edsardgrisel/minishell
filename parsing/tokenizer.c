@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:18:49 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/08 13:54:40 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/09 10:35:38 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,8 @@ enum e_token_type	get_token_type(char *str)
 	}
 	if (str[0] == '|')
 		return (TOKEN_PIPE);
-	if (str[0] ==  '&' || str[0] == ';')
-		return (TOKEN_UNSUPPORTED);
+	// if (str[0] ==  '&' || str[0] == ';')
+	// 	return (TOKEN_UNSUPPORTED);
 	return (TOKEN_WORD);
 }
 
@@ -161,11 +161,11 @@ int	tokenize_loop(char *str, t_token_list *token_list)
 				return (cleanup_tokens(token_list->tokens), -1);
 		cur_token = &(token_list->tokens[token_list->count++]);
 		set_next_token(str, &str_idx, cur_token);
-		if (cur_token->type == TOKEN_UNSUPPORTED)
-		{
-			printf("Error at: %s\n", cur_token->value);
-			return (cleanup_tokens(token_list->tokens), -1);
-		}
+		// if (cur_token->type == TOKEN_UNSUPPORTED)
+		// {
+		// 	printf("Error at: %s\n", cur_token->value);
+		// 	return (cleanup_tokens(token_list->tokens), -1);
+		// }
 		if (cur_token->type == TOKEN_WORD && cur_token->value == NULL)
 			return (-1);
 	}
