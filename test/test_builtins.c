@@ -51,6 +51,6 @@ void	test_builtins()
 	test_echo_helper("echo hello", "hello\n");
 	test_echo_helper("echo -n hello", "hello");
 	test_echo_helper("echo -nnnnn -n hello", "hello");
-	test_echo_helper("echo -na hello", "-na hello");
+	test_echo_helper("echo -na hello", "-na hello\n");
 
 }
