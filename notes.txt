@@ -1,3 +1,18 @@
 Grammar
 
-<pipe> := <cmd> (|<cmd>)*
+pipeline = executable, {"|" executable}
+
+executable = {redirect}, command
+
+command = command_name, {redirect | argument}
+
+command_name = WORD
+
+argument = WORD
+
+redirect = "<" | ">" | ">>", file_name
+		 | "<<", here_end
+
+file_name = WORD
+
+here_end = WORD
