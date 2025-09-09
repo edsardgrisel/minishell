@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:41:12 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 13:03:39 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/09 15:05:46 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,22 @@ t_builtin_type	get_builtin_type(char *command_str)
 	if (ft_strncmp(command_str, "echo", 4) == 0 && 
 		(command_str[4] == '\0' || command_str[4] == ' '))
 		return (BUILTIN_ECHO);
-	if (ft_strncmp(command_str, "cd", 2) == 0 && 
+	else if (ft_strncmp(command_str, "cd", 2) == 0 && 
 		(command_str[2] == '\0' || command_str[2] == ' '))
 		return (BUILTIN_CD);
-	if (ft_strncmp(command_str, "pwd", 3) == 0 && 
+	else if (ft_strncmp(command_str, "pwd", 3) == 0 && 
 		(command_str[3] == '\0' || command_str[3] == ' '))
 		return (BUILTIN_PWD);
-	if (ft_strncmp(command_str, "export", 6) == 0 && 
+	else if (ft_strncmp(command_str, "export", 6) == 0 && 
 		(command_str[6] == '\0' || command_str[6] == ' '))
 		return (BUILTIN_EXPORT);
-	if (ft_strncmp(command_str, "unset", 5) == 0 && 
+	else if (ft_strncmp(command_str, "unset", 5) == 0 && 
 		(command_str[5] == '\0' || command_str[5] == ' '))
 		return (BUILTIN_UNSET);
-	if (ft_strncmp(command_str, "env", 3) == 0 && 
+	else if (ft_strncmp(command_str, "env", 3) == 0 && 
 		(command_str[3] == '\0' || command_str[3] == ' '))
 		return (BUILTIN_ENV);
-	if (ft_strncmp(command_str, "exit", 4) == 0 && 
+	else if (ft_strncmp(command_str, "exit", 4) == 0 && 
 		(command_str[4] == '\0' || command_str[4] == ' '))
 		return (BUILTIN_EXIT);
 	return (BUILTIN_NONE);
@@ -96,10 +96,11 @@ static t_ast_node	*add_redirect_parent_node(
 		node_type = NODE_REDIRECT_HEREDOC;
 	else if (cur_token->type == TOKEN_REDIRECT_APPEND)
 		node_type = NODE_REDIRECT_APPEND;
-
+	else
+		return (free(redirect_file), NULL); // check this case?
 	parent = create_node(node_type, NULL, redirect_file);
 	if (parent == NULL)
-		return (NULL);
+		return (free(redirect_file), NULL);
 	parent->left = root;
 	return (parent);
 }

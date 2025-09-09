@@ -7,11 +7,14 @@ SRCS= ../ft_strndup.c \
     ../parsing/tokenizer.c \
 	../parsing/parse_command.c \
 	../ft_strjoin_char.c \
-	../parsing/parsing_cleanup.c
+	../parsing/parsing_cleanup.c \
+	../execution/echo.c \
+	../execution/execution.c
 
-TEST_SRCS= test_tokens.c test.c test_parsing.c
 
-HEADERS=-I ../libft -I ../include -I include -I ../parsing 
+TEST_SRCS= test_tokens.c test.c test_parsing.c test_builtins.c
+
+HEADERS=-I ../libft -I ../include -I include -I ../parsing -I ../
 
 OBJS = $(SRCS:.c=.o)
 TEST_OBJS = $(TEST_SRCS:.c=.o)
@@ -21,15 +24,15 @@ LIBFT_ARCHIVE=$(LIBFT_DIR)/libft.a
 
 .PHONY: all clean fclean re
 
-all: $(NAME)
+all: libft $(NAME)
 
-$(NAME): $(OBJS) $(TEST_OBJS) $(LIBFT_ARCHIVE)
+$(NAME): $(OBJS) $(TEST_OBJS) Makefile
 	$(CC) $(CFLAGS) $(OBJS) $(TEST_OBJS) $(LIBFT_ARCHIVE) -lreadline -o $(NAME)
 
-%.o: %.c
+%.o: %.c Makefile
 	$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 
-$(LIBFT_ARCHIVE):
+libft:
 	$(MAKE) -s -C $(LIBFT_DIR)
 
 clean:

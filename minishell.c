@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 13:14:20 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 11:37:18 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/09 14:09:59 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	minishell(char *envp[], t_minishell_info *minishell_info)
 {
 	char		*line;
 	t_ast_node	*ast;
+	int			result;
 
 	(void)envp;
 
@@ -52,7 +53,7 @@ int	minishell(char *envp[], t_minishell_info *minishell_info)
 	free(line);
 	if (ast == NULL)
 		return (-1);
-	execution(ast);
+	result = execution(ast, minishell_info);
 	clear_ast(ast);
-	return (0);
+	return (result);
 }

@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:18:49 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 11:28:38 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/09 13:46:28 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,6 @@ int	realloc_token_list_tokens(t_token_list **token_list)
 	(*token_list)->tokens = new_tokens;
 	(*token_list)->capacity *= 2;
 	return (0);
-}
-
-void	set_open_quotes(int *open_single_quote, int *open_double_quote,
-		char *str, int i)
-{
-
 }
 
 /// @brief loops until it reaches the end of the token. sets the *i to the index

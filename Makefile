@@ -9,6 +9,9 @@ SRCS= main.c \
 	parsing/tokenizer.c \
 	parsing/parse_command.c \
 	parsing/parsing_cleanup.c \
+	execution/echo.c \
+	execution/execution.c \
+	execution/pwd.c \
 
 
 OBJS = $(SRCS:.c=.o)
@@ -18,17 +21,17 @@ HEADERS=-I libft -I include
 LIBFT_DIR=./libft
 LIBFT_ARCHIVE=$(LIBFT_DIR)/libft.a
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re bonus libft
 
 all: $(NAME)
 
-$(NAME): $(OBJS) $(LIBFT_ARCHIVE)
+$(NAME): $(OBJS) libft Makefile
 	$(CC) $(OBJS) $(LIBFT_ARCHIVE) -lreadline -o $(NAME)
 
-%.o: %.c
+%.o: %.c Makefile
 	$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 
-$(LIBFT_ARCHIVE):
+libft:
 	$(MAKE) -s -C $(LIBFT_DIR) bonus
 
 clean:

@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 12:55:01 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/09 16:44:38 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,14 +94,15 @@ typedef struct s_minishell_info
 	int	cur_exit_code;
 }	t_minishell_info;
 
-t_token		*tokenize(char *str);
-void		free_double_pointer(void **ptr);
-char		*ft_strndup(char *str, int n);
 int			minishell(char *envp[], t_minishell_info *minishell_info);
+char		*ft_strjoin_char(char const *s1, char const *s2, char c);
+char		*ft_strndup(char *str, int n);
+
+// Parsing
+t_token		*tokenize(char *str);
 t_ast_node	*parse(t_token *tokens);
 t_ast_node	*parse_command(t_token *tokens, int *i);
 void		cleanup_tokens(t_token *tokens);
-char		*ft_strjoin_char(char const *s1, char const *s2, char c);
 t_ast_node	*create_node(
 	t_ast_node_type node_type,
 	char *command_and_args,
@@ -109,6 +110,11 @@ t_ast_node	*create_node(
 );
 void	clear_ast(t_ast_node *root);
 t_ast_node	*parse_pipeline(t_token *tokens, int *i);
+t_ast_node	*create_ast(char *line);
 
+// Execution
+int	execution(t_ast_node *ast_root, t_minishell_info *minishell_info);
+int	built_in_exec(t_ast_node *ast_node, t_minishell_info *minishell_info);
+void	exec_echo(t_ast_node *ast_node, t_minishell_info *minishell_info);
 
 #endif
