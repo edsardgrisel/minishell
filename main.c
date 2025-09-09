@@ -6,15 +6,16 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 10:43:22 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/09 11:38:37 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
 
-/// @brief Loops and calls minishell repeatedly. if failure returned, return
-/// EXIT_FAILURE. It is the reponsability of minishell() to perror the reason
+/// @brief Loops and calls minishell repeatedly. if -1 returned, return
+/// current exit code. It is the reponsability of minishell() to perror the
+/// reason
 /// @param argc 
 /// @param argv 
 /// @param envp 
@@ -29,7 +30,7 @@ int	main(int argc, char *argv[], char *envp[])
 	{
 		if (minishell(envp, &minishell_info) == -1)
 		{
-			return (EXIT_FAILURE);
+			return (minishell_info.cur_exit_code);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 11:11:26 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/09 12:55:01 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,18 @@ typedef enum e_token_type
 	TOKEN_REDIRECT_APPEND,
 	// TOKEN_UNSUPPORTED,
 }	t_token_type;
+
+typedef enum e_builtin_type
+{
+    BUILTIN_NONE = 0,
+    BUILTIN_ECHO,
+    BUILTIN_CD,
+    BUILTIN_PWD,
+    BUILTIN_EXPORT,
+    BUILTIN_UNSET,
+    BUILTIN_ENV,
+    BUILTIN_EXIT
+}	t_builtin_type;
 
 typedef struct s_token
 {
@@ -73,6 +85,7 @@ typedef struct s_ast_node
 	char			*redirect_file;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
+	t_builtin_type		builtin_type;
 
 }	t_ast_node;
 
