@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/10 14:30:43 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 15:31:11 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,7 @@ typedef struct s_alloced_list
 
 typedef enum e_ast_node_type
 {
+	NODE_NONE,
 	NODE_COMMAND,
 	NODE_PIPE,
 	NODE_REDIRECT_IN,
@@ -83,6 +84,7 @@ typedef struct s_ast_node
 	t_ast_node_type	node_type;
 	char			*command_and_args;
 	char			*redirect_file;
+	char			*heredoc_delim;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
 	t_builtin_type		builtin_type;
@@ -106,7 +108,8 @@ void		cleanup_tokens(t_token *tokens);
 t_ast_node	*create_node(
 	t_ast_node_type node_type,
 	char *command_and_args,
-	char *redirect_file
+	char *redirect_file,
+	char *heredoc_delim
 );
 void	clear_ast(t_ast_node *root);
 t_ast_node	*parse_pipeline(t_token *tokens, int *i);

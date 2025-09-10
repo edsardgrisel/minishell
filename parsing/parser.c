@@ -6,13 +6,30 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:06:21 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/10 14:31:04 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 15:32:19 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
 #include <stdlib.h>
+
+t_ast_node_type	get_redirect_node_type(t_token *cur_token)
+{
+	t_ast_node_type	node_type;
+
+	if (cur_token->type == TOKEN_REDIRECT_IN)
+		node_type = NODE_REDIRECT_IN;
+	else if (cur_token->type == TOKEN_REDIRECT_OUT)
+		node_type = NODE_REDIRECT_OUT;
+	else if (cur_token->type == TOKEN_REDIRECT_HEREDOC)
+		node_type = NODE_REDIRECT_HEREDOC;
+	else if (cur_token->type == TOKEN_REDIRECT_APPEND)
+		node_type = NODE_REDIRECT_APPEND;
+	else
+		node_type = NODE_NONE;
+	return (node_type);
+}
 
 /// @brief Add redirect parent node to the current root.
 /// @param root 
@@ -24,24 +41,26 @@ t_ast_node	*add_redirect_parent_node(
 	t_token *cur_token,
 	t_token *next_node)
 {
-	t_ast_node	*parent;
+	t_ast_node		*parent;
 	t_ast_node_type	node_type;
 	char			*redirect_file;
+	char			*heredoc_delim;
+	char			*next_node_value;
 
-	redirect_file = ft_strdup(next_node->value);
-	if (redirect_file == NULL)
+	next_node_value = ft_strdup(next_node->value);
+	if (next_node_value == NULL)
 		return (NULL);
-	if (cur_token->type == TOKEN_REDIRECT_IN)
-		node_type = NODE_REDIRECT_IN;
-	else if (cur_token->type == TOKEN_REDIRECT_OUT)
-		node_type = NODE_REDIRECT_OUT;
-	else if (cur_token->type == TOKEN_REDIRECT_HEREDOC)
-		node_type = NODE_REDIRECT_HEREDOC;
-	else if (cur_token->type == TOKEN_REDIRECT_APPEND)
-		node_type = NODE_REDIRECT_APPEND;
+	node_type = get_redirect_node_type(cur_token);
+	if (node_type == NODE_NONE)
+		return (free(next_node_value), NULL); // check this case?
+	if (node_type == NODE_REDIRECT_HEREDOC)
+	{
+		redirect_file = NULL;
+		heredoc_delim = next_node_value;
+	}
 	else
-		return (free(redirect_file), NULL); // check this case?
-	parent = create_node(node_type, NULL, redirect_file);
+		redirect_file = next_node_value;
+	parent = create_node(node_type, NULL, redirect_file, heredoc_delim);
 	if (parent == NULL)
 		return (free(redirect_file), NULL);
 	parent->left = root;
@@ -51,7 +70,8 @@ t_ast_node	*add_redirect_parent_node(
 t_ast_node	*create_node(
 	t_ast_node_type node_type,
 	char *command_and_args,
-	char *redirect_file
+	char *redirect_file,
+	char *heredoc_delim
 )
 {
 	t_ast_node	*node;
@@ -62,6 +82,7 @@ t_ast_node	*create_node(
 	node->node_type = node_type;
 	node->command_and_args = command_and_args;
 	node->redirect_file = redirect_file;
+	node->heredoc_delim = heredoc_delim;
 	return (node);
 }
 
@@ -86,6 +107,9 @@ t_ast_node	*parse_executable(t_token *tokens, int *i)
 			NULL, &(tokens[*i]), &(tokens[++(*i)]));
 		if (root == NULL)
 			return (clear_ast(root), NULL);
+		/////// check tihs
+		(*i)++;
+		////////
 	}
 	
 	command_node = parse_command(tokens, i);
@@ -113,7 +137,7 @@ static t_ast_node	*add_parent_pipe_node(
 	t_ast_node	*right_node;
 
 
-	parent_pipe = create_node(NODE_PIPE, NULL, NULL);
+	parent_pipe = create_node(NODE_PIPE, NULL, NULL, NULL);
 	if (parent_pipe == NULL)
 		return (NULL);
 	parent_pipe->left = root;

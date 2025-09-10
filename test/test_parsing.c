@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:28:54 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/10 14:30:29 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 15:38:35 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,10 +202,10 @@ void test_parse_executable()
 {
 	int	i;
 	////////////////////////
-    // Test 1: Redirect followed by command
+    // Test 1: Redirect out followed by command
 	///////////////////////
     t_token tokens1[] = {
-        {TOKEN_WORD, ">"},
+        {TOKEN_REDIRECT_OUT, ">"},
         {TOKEN_WORD, "out.txt"},
         {TOKEN_WORD, "ls"},
         {TOKEN_NONE, NULL}
@@ -213,8 +213,25 @@ void test_parse_executable()
     printf("Test 1: > out.txt ls\n");
     i = 0;
     t_ast_node *ast1 = parse_executable(tokens1, &i);
-    print_ast(ast1);
+	assert(ast1->node_type == NODE_REDIRECT_OUT);
+	assert(strcmp(ast1->redirect_file, "out.txt") == 0);
+	assert(ast1->left->node_type == NODE_COMMAND);
+	assert(strcmp(ast1->left->command_and_args, "ls") == 0);
 	
+
+	////////////////////////
+    // Test 2: Heredoc
+	///////////////////////
+    t_token tokens2[] = {
+        {TOKEN_REDIRECT_HEREDOC, NULL},
+        {TOKEN_WORD, "abc"},
+        {TOKEN_NONE, NULL}
+    };
+    printf("Test 2: >> abc\n");
+    i = 0;
+    t_ast_node *ast2 = parse_executable(tokens2, &i);
+	assert(ast2->node_type == NODE_REDIRECT_HEREDOC);
+	assert(strcmp(ast2->heredoc_delim, "abc") == 0);
 }
 
 void	test_parse_pipeline()

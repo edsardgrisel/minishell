@@ -22,7 +22,7 @@ TEST_OBJS = $(TEST_SRCS:.c=.o)
 LIBFT_DIR=../libft
 LIBFT_ARCHIVE=$(LIBFT_DIR)/libft.a
 
-.PHONY: all clean fclean re
+.PHONY: all clean fclean re libft
 
 all: libft $(NAME)
 
@@ -33,7 +33,7 @@ $(NAME): $(OBJS) $(TEST_OBJS) Makefile
 	$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 
 libft:
-	$(MAKE) -s -C $(LIBFT_DIR)
+	@$(MAKE) -s -C $(LIBFT_DIR)
 
 clean:
 	@rm -f $(OBJS) $(TEST_OBJS)

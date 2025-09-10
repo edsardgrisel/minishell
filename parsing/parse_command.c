@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:41:12 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/10 14:16:48 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 15:32:38 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static t_ast_node	*set_command_and_args(t_token *tokens, int *i)
 	t_ast_node	*root;
 	t_ast_node	*parent_redirect;
 
-	root = create_node(NODE_COMMAND, NULL, NULL);
+	root = create_node(NODE_COMMAND, NULL, NULL, NULL);
 	if (root == NULL)
 		return (NULL);
 	while (tokens[*i].type != TOKEN_NONE && tokens[*i].type != TOKEN_PIPE)
