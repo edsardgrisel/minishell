@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:41:12 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 15:05:46 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 13:53:37 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,39 +71,8 @@ static int	append_word(t_ast_node *ast_node, char *to_append)
 	}
 	return (0);
 }
-/// @brief Add redirect parent node to the current root.
-/// @param root 
-/// @param cur_token 
-/// @param next_node 
-/// @return returns the parent (new root in set_command_and_args())
-static t_ast_node	*add_redirect_parent_node(
-	t_ast_node *root,
-	t_token *cur_token,
-	t_token *next_node)
-{
-	t_ast_node	*parent;
-	t_ast_node_type	node_type;
-	char			*redirect_file;
 
-	redirect_file = ft_strdup(next_node->value);
-	if (redirect_file == NULL)
-		return (NULL);
-	if (cur_token->type == TOKEN_REDIRECT_IN)
-		node_type = NODE_REDIRECT_IN;
-	else if (cur_token->type == TOKEN_REDIRECT_OUT)
-		node_type = NODE_REDIRECT_OUT;
-	else if (cur_token->type == TOKEN_REDIRECT_HEREDOC)
-		node_type = NODE_REDIRECT_HEREDOC;
-	else if (cur_token->type == TOKEN_REDIRECT_APPEND)
-		node_type = NODE_REDIRECT_APPEND;
-	else
-		return (free(redirect_file), NULL); // check this case?
-	parent = create_node(node_type, NULL, redirect_file);
-	if (parent == NULL)
-		return (free(redirect_file), NULL);
-	parent->left = root;
-	return (parent);
-}
+
 
 /// @brief Will loop until the end of tokens or a pipe. It will gather the
 /// command and args and any redirects with associated in or outfile and return

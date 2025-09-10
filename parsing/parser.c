@@ -6,14 +6,47 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:06:21 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/08 15:40:10 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 13:53:01 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "libft.h"
+#include <stdlib.h>
 
+/// @brief Add redirect parent node to the current root.
+/// @param root 
+/// @param cur_token 
+/// @param next_node 
+/// @return returns the parent (new root in set_command_and_args())
+t_ast_node	*add_redirect_parent_node(
+	t_ast_node *root,
+	t_token *cur_token,
+	t_token *next_node)
+{
+	t_ast_node	*parent;
+	t_ast_node_type	node_type;
+	char			*redirect_file;
 
+	redirect_file = ft_strdup(next_node->value);
+	if (redirect_file == NULL)
+		return (NULL);
+	if (cur_token->type == TOKEN_REDIRECT_IN)
+		node_type = NODE_REDIRECT_IN;
+	else if (cur_token->type == TOKEN_REDIRECT_OUT)
+		node_type = NODE_REDIRECT_OUT;
+	else if (cur_token->type == TOKEN_REDIRECT_HEREDOC)
+		node_type = NODE_REDIRECT_HEREDOC;
+	else if (cur_token->type == TOKEN_REDIRECT_APPEND)
+		node_type = NODE_REDIRECT_APPEND;
+	else
+		return (free(redirect_file), NULL); // check this case?
+	parent = create_node(node_type, NULL, redirect_file);
+	if (parent == NULL)
+		return (free(redirect_file), NULL);
+	parent->left = root;
+	return (parent);
+}
 
 t_ast_node	*create_node(
 	t_ast_node_type node_type,

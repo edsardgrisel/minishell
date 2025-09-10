@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:13:55 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 17:58:33 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 13:46:54 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	is_valid_n_flag(char *str, int *i)
 char	*get_str_to_print_and_set_n_flag(char *args, int *n_flag)
 {
 	int		i;
-	int		minus_encountered;
 	char	*cur_args_ptr;
 
 	i = 0;
@@ -103,7 +102,7 @@ void	exec_echo(t_ast_node *ast_node, t_minishell_info *minishell_info)
 
 	command_and_args = ast_node->command_and_args;
 	i = 0;
-	while ((command_and_args[i]) != ' ')
+	while ((command_and_args[i]) != ' ' && command_and_args[i])
 		i++;
 	i++;
 	args = &(command_and_args[i]);

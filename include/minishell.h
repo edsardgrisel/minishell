@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 16:44:38 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 13:52:41 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,10 +111,15 @@ t_ast_node	*create_node(
 void	clear_ast(t_ast_node *root);
 t_ast_node	*parse_pipeline(t_token *tokens, int *i);
 t_ast_node	*create_ast(char *line);
+t_ast_node	*add_redirect_parent_node(
+	t_ast_node *root,
+	t_token *cur_token,
+	t_token *next_node);
 
 // Execution
 int	execution(t_ast_node *ast_root, t_minishell_info *minishell_info);
 int	built_in_exec(t_ast_node *ast_node, t_minishell_info *minishell_info);
 void	exec_echo(t_ast_node *ast_node, t_minishell_info *minishell_info);
+
 
 #endif

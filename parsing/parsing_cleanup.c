@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:00:42 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/08 13:37:44 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 13:07:26 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,8 @@
 
 void	clear_ast(t_ast_node *root)
 {
-	(void)root;
+	free(root);
+	root = NULL;
 	return ;
 }
 
