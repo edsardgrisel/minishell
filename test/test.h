@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 13:44:50 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 16:41:02 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 14:32:36 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 
 void	test_tokenize();
 void	test_parse_command();
+void test_parse_executable();
 void	test_parse_pipeline();
 void	test_create_ast();
 void	test_builtins();

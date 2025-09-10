@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/10 13:52:41 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 14:30:43 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,7 @@ t_ast_node	*add_redirect_parent_node(
 	t_ast_node *root,
 	t_token *cur_token,
 	t_token *next_node);
+t_ast_node	*parse_executable(t_token *tokens, int *i);
 
 // Execution
 int	execution(t_ast_node *ast_root, t_minishell_info *minishell_info);

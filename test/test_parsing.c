@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:28:54 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 15:04:02 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 14:30:29 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -198,6 +198,24 @@ void test_parse_command()
 
 }
 
+void test_parse_executable()
+{
+	int	i;
+	////////////////////////
+    // Test 1: Redirect followed by command
+	///////////////////////
+    t_token tokens1[] = {
+        {TOKEN_WORD, ">"},
+        {TOKEN_WORD, "out.txt"},
+        {TOKEN_WORD, "ls"},
+        {TOKEN_NONE, NULL}
+    };
+    printf("Test 1: > out.txt ls\n");
+    i = 0;
+    t_ast_node *ast1 = parse_executable(tokens1, &i);
+    print_ast(ast1);
+	
+}
 
 void	test_parse_pipeline()
 {

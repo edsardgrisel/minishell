@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 13:44:11 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 16:02:57 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 14:32:44 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,13 @@ int	main()
     printf("\n");
     test_parse_command();
     
+	printf("\n");
+    printf("╔══════════════════════════════════════╗\n");
+    printf("║           TEST PARSE EXECUTABLE      ║\n");
+    printf("╚══════════════════════════════════════╝\n");
+    printf("\n");
+    test_parse_executable();
+
     printf("\n");
     printf("╔══════════════════════════════════════╗\n");
     printf("║         TEST PARSE PIPELINE          ║\n");
@@ -43,7 +50,7 @@ int	main()
     printf("\n");
     test_create_ast();
 
-	    printf("\n");
+	printf("\n");
     printf("╔══════════════════════════════════════╗\n");
     printf("║           TEST BUILTINS              ║\n");
     printf("╚══════════════════════════════════════╝\n");

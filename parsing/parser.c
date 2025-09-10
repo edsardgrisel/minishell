@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:06:21 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/10 13:53:01 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 14:31:04 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,27 @@ executable = {redirect}, command
 t_ast_node	*parse_executable(t_token *tokens, int *i)
 {
 	t_ast_node	*root;
-	// skip optional redirect
-	root = parse_command(tokens, i);
-	if (root == NULL)
+	t_ast_node	*command_node;
+
+	root = NULL;
+	if (tokens[*i].type == TOKEN_REDIRECT_IN ||
+		tokens[*i].type == TOKEN_REDIRECT_OUT ||
+		tokens[*i].type == TOKEN_REDIRECT_HEREDOC ||
+		tokens[*i].type == TOKEN_REDIRECT_APPEND)
+	{
+		root = add_redirect_parent_node(
+			NULL, &(tokens[*i]), &(tokens[++(*i)]));
+		if (root == NULL)
+			return (clear_ast(root), NULL);
+	}
+	
+	command_node = parse_command(tokens, i);
+	if (command_node == NULL)
 		return (NULL);
+	if (root != NULL)
+		root->left = command_node;
+	else
+		root = command_node;
 	return (root);
 }
 

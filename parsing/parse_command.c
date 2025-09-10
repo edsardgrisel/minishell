@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:41:12 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/10 13:53:37 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/10 14:16:48 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,8 @@ static t_ast_node	*set_command_and_args(t_token *tokens, int *i)
 		}
 		else
 		{
-			parent_redirect = add_redirect_parent_node(root, &(tokens[*i]), &(tokens[++(*i)]));
+			parent_redirect = add_redirect_parent_node(
+				root, &(tokens[*i]), &(tokens[++(*i)]));
 			if (parent_redirect == NULL)
 				return (clear_ast(root), NULL);
 			root = parent_redirect;
