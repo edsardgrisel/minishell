@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 14:41:53 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 11:38:37 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/11 13:48:44 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	main(int argc, char *argv[], char *envp[])
 	
 	(void)argc;
 	(void)argv;
+	minishell_info.envp = &envp;
+	minishell_info.cur_exit_code = 0;
 	while (1)
 	{
 		if (minishell(envp, &minishell_info) == -1)

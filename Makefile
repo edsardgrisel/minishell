@@ -12,6 +12,7 @@ SRCS= main.c \
 	execution/echo.c \
 	execution/execution.c \
 	execution/pwd.c \
+	execution/env.c
 
 
 OBJS = $(SRCS:.c=.o)

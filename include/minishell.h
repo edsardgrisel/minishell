@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/10 15:31:11 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/11 14:05:47 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ typedef struct s_ast_node
 typedef struct s_minishell_info
 {
 	int	cur_exit_code;
+	char	***envp;
 }	t_minishell_info;
 
 int			minishell(char *envp[], t_minishell_info *minishell_info);
@@ -121,9 +122,10 @@ t_ast_node	*add_redirect_parent_node(
 t_ast_node	*parse_executable(t_token *tokens, int *i);
 
 // Execution
-int	execution(t_ast_node *ast_root, t_minishell_info *minishell_info);
-int	built_in_exec(t_ast_node *ast_node, t_minishell_info *minishell_info);
+int		execution(t_ast_node *ast_root, t_minishell_info *minishell_info);
+int		built_in_exec(t_ast_node *ast_node, t_minishell_info *minishell_info);
 void	exec_echo(t_ast_node *ast_node, t_minishell_info *minishell_info);
+void	exec_env(t_minishell_info *minishell_info);
 
 
 #endif

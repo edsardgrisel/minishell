@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:06:21 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/10 15:32:19 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/11 14:07:47 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ t_ast_node	*add_redirect_parent_node(
 	char			*next_node_value;
 
 	next_node_value = ft_strdup(next_node->value);
+	heredoc_delim = NULL;
 	if (next_node_value == NULL)
 		return (NULL);
 	node_type = get_redirect_node_type(cur_token);
