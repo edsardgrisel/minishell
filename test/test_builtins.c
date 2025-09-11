@@ -23,6 +23,7 @@ void test_echo_helper(char *line, char *exp)
 		close(pipefd[1]);
 		
 		exec_echo(ast, &minishell_info);  // Your echo function
+		usleep(100000);
 		exit(0);
 	}
 	else

@@ -9,7 +9,9 @@ SRCS= ../ft_strndup.c \
 	../ft_strjoin_char.c \
 	../parsing/parsing_cleanup.c \
 	../execution/echo.c \
-	../execution/execution.c
+	../execution/execution.c \
+	../execution/pwd.c \
+	../execution/env.c \
 
 
 TEST_SRCS= test_tokens.c test.c test_parsing.c test_builtins.c
