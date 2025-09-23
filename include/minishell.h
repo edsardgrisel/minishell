@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/11 16:27:07 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:28:42 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,11 +93,12 @@ typedef struct s_ast_node
 
 typedef struct s_minishell_info
 {
-	int	cur_exit_code;
-	char	***envp;
+	int			cur_exit_code;
+	char		***envp;
+	t_ast_node	*ast;
 }	t_minishell_info;
 
-int			minishell(char *envp[], t_minishell_info *minishell_info);
+int			minishell(t_minishell_info *minishell_info);
 char		*ft_strjoin_char(char const *s1, char const *s2, char c);
 char		*ft_strndup(char *str, int n);
 
@@ -120,13 +121,14 @@ t_ast_node	*add_redirect_parent_node(
 	t_token *cur_token,
 	t_token *next_node);
 t_ast_node	*parse_executable(t_token *tokens, int *i);
+void	free_ast(t_ast_node *ast);
 
 // Execution
-int		execution(t_ast_node *ast_root, t_minishell_info *minishell_info);
+int		execution(t_minishell_info *minishell_info);
 int		built_in_exec(t_ast_node *ast_node, t_minishell_info *minishell_info);
 void	exec_echo(t_ast_node *ast_node, t_minishell_info *minishell_info);
 void	exec_env(t_minishell_info *minishell_info);
 void	exec_pwd(t_minishell_info *minishell_info);
-
-
+void	exec_exit(t_ast_node *ast_node, t_minishell_info *minishell_info);
+void	exec_cd(t_ast_node *ast_node, t_minishell_info *minishell_info);
 #endif

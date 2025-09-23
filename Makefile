@@ -13,6 +13,9 @@ SRCS= main.c \
 	execution/execution.c \
 	execution/pwd.c \
 	execution/env.c \
+	execution/exit.c \
+	execution/cd.c \
+	execution/env_helpers.c
 
 
 OBJS = $(SRCS:.c=.o)

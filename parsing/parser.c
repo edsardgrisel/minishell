@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:06:21 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/11 14:07:47 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/22 14:38:06 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ t_ast_node	*parse_executable(t_token *tokens, int *i)
 		root = add_redirect_parent_node(
 			NULL, &(tokens[*i]), &(tokens[++(*i)]));
 		if (root == NULL)
-			return (clear_ast(root), NULL);
+			return (free_ast(root), NULL);
 		/////// check tihs
 		(*i)++;
 		////////
@@ -144,7 +144,7 @@ static t_ast_node	*add_parent_pipe_node(
 	parent_pipe->left = root;
 	right_node = parse_executable(tokens, i);
 	if (right_node == NULL)
-		return (clear_ast(parent_pipe), NULL);
+		return (free_ast(parent_pipe), NULL);
 	parent_pipe->right = right_node;
 	return (parent_pipe);
 }
@@ -167,7 +167,7 @@ t_ast_node	*parse_pipeline(t_token *tokens, int *i)
 			(*i)++;
 			parent_pipe = add_parent_pipe_node(root, tokens, i);
 			if (parent_pipe == NULL)
-				return (clear_ast(root), NULL);
+				return (free_ast(root), NULL);
 			root = parent_pipe;
 		}
 		else

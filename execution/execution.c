@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 10:36:12 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/11 16:31:33 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/22 16:10:28 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@ int	built_in_exec(t_ast_node *ast_node, t_minishell_info *minishell_info)
 	builtin_type = ast_node->builtin_type;
 	if (builtin_type == BUILTIN_ECHO)
 		exec_echo(ast_node, minishell_info);
-	// else if (builtin_type == BUILTIN_CD)
-	// 	exec_cd(ast_node, minishell_info);
+	else if (builtin_type == BUILTIN_CD)
+		exec_cd(ast_node, minishell_info);
 	else if (builtin_type == BUILTIN_PWD)
 		exec_pwd(minishell_info);
 	// else if (builtin_type == BUILTIN_EXPORT)
@@ -34,8 +34,8 @@ int	built_in_exec(t_ast_node *ast_node, t_minishell_info *minishell_info)
 	// 	exec_unset(ast_node, minishell_info);
 	else if (builtin_type == BUILTIN_ENV)
 		exec_env(minishell_info);
-	// else if (builtin_type == BUILTIN_EXIT)
-	// 	exec_exit(ast_node, minishell_info);
+	else if (builtin_type == BUILTIN_EXIT)
+		exec_exit(ast_node, minishell_info);
 	// else if (builtin_type == BUILTIN_NONE)
 	// 	return (1);
 	return (0);
@@ -43,11 +43,11 @@ int	built_in_exec(t_ast_node *ast_node, t_minishell_info *minishell_info)
 }
 
 
-int	execution(t_ast_node *ast_root, t_minishell_info *minishell_info)
+int	execution(t_minishell_info *minishell_info)
 {
 	int	is_not_built_in;
 	//single commands only
-	is_not_built_in = built_in_exec(ast_root, minishell_info);
+	is_not_built_in = built_in_exec(minishell_info->ast, minishell_info);
 
 
 	// return success;

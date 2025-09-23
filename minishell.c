@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 13:14:20 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/09 14:09:59 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/22 15:41:21 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,11 @@ t_ast_node	*create_ast(char *line)
 /// then ast is passed to execution
 /// @return 0 when you want to give another prompt, -1 when error or exit and
 /// you want to close the program in main
-int	minishell(char *envp[], t_minishell_info *minishell_info)
+int	minishell(t_minishell_info *minishell_info)
 {
 	char		*line;
 	t_ast_node	*ast;
 	int			result;
-
-	(void)envp;
 
 	line = readline("minishell$ ");
 	if (line == NULL)
@@ -53,7 +51,8 @@ int	minishell(char *envp[], t_minishell_info *minishell_info)
 	free(line);
 	if (ast == NULL)
 		return (-1);
-	result = execution(ast, minishell_info);
-	clear_ast(ast);
+	minishell_info->ast = ast;
+	result = execution(minishell_info);
+	free_ast(ast);
 	return (result);
 }
