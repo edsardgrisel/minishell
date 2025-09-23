@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 10:36:12 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/22 16:10:28 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/23 15:00:24 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	built_in_exec(t_ast_node *ast_node, t_minishell_info *minishell_info)
 		exec_cd(ast_node, minishell_info);
 	else if (builtin_type == BUILTIN_PWD)
 		exec_pwd(minishell_info);
-	// else if (builtin_type == BUILTIN_EXPORT)
-	// 	exec_export(ast_node, minishell_info);
+	else if (builtin_type == BUILTIN_EXPORT)
+		exec_export(ast_node, minishell_info);
 	// else if (builtin_type == BUILTIN_UNSET)
 	// 	exec_unset(ast_node, minishell_info);
 	else if (builtin_type == BUILTIN_ENV)

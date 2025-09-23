@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/22 16:28:42 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/23 14:55:09 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,4 +131,5 @@ void	exec_env(t_minishell_info *minishell_info);
 void	exec_pwd(t_minishell_info *minishell_info);
 void	exec_exit(t_ast_node *ast_node, t_minishell_info *minishell_info);
 void	exec_cd(t_ast_node *ast_node, t_minishell_info *minishell_info);
+void	exec_export(t_ast_node *ast_node, t_minishell_info *minishell_info);
 #endif

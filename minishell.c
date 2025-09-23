@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 13:14:20 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/22 15:41:21 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/23 14:00:01 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ int	minishell(t_minishell_info *minishell_info)
 	line = readline("minishell$ ");
 	if (line == NULL)
 		return (perror("Readline returned null. Exiting minishell\n"), -1);
+	add_history(line);
 	ast = create_ast(line);
 	free(line);
 	if (ast == NULL)
