@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:06:21 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/22 14:38:06 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/23 16:24:46 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,7 +112,6 @@ t_ast_node	*parse_executable(t_token *tokens, int *i)
 		(*i)++;
 		////////
 	}
-	
 	command_node = parse_command(tokens, i);
 	if (command_node == NULL)
 		return (NULL);
