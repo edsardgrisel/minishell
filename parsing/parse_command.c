@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:41:12 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/22 14:37:44 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/24 14:08:10 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,10 @@ t_builtin_type	get_builtin_type(char *command_str)
 	return (BUILTIN_NONE);
 }
 
-/// @brief reallocs and appends to_append to the ast_nodes command_and_args and
-/// frees the old command_and_args string. In case command_and_args is empty
-/// (first call of this function when the token is the command name), strdup 
+/// @brief reallocs and appends to_append to the ast_nodes cmd_str and
+/// frees the old cmd_str string. In case cmd_str is empty
+/// (first call of this function when the token is the command name), strdup
+/// TODO: will also add to_append to the linked list command_list
 /// @param result 
 /// @param to_append 
 /// @return 0 on success, -1 on failure
@@ -54,39 +55,40 @@ static int	append_word(t_ast_node *ast_node, char *to_append)
 {
 	char	*temp;
 
-	if (ast_node->command_and_args == NULL)
+	if (ast_node->cmd_str == NULL)
 	{
-		ast_node->command_and_args = ft_strdup(to_append);
-		if (ast_node->command_and_args == NULL)
+		ast_node->cmd_str = ft_strdup(to_append);
+		if (ast_node->cmd_str == NULL)
 			return (-1);
-		ast_node->builtin_type = get_builtin_type(ast_node->command_and_args);
+		ast_node->builtin_type = get_builtin_type(ast_node->cmd_str);
 	}
 	else
 	{
-		temp = ft_strjoin_char(ast_node->command_and_args, to_append, ' ');
+		temp = ft_strjoin_char(ast_node->cmd_str, to_append, ' ');
 		if (temp == NULL)
 			return (-1);
-		free(ast_node->command_and_args);
-		ast_node->command_and_args = temp;
+		free(ast_node->cmd_str);
+		ast_node->cmd_str = temp;
 	}
 	return (0);
 }
 
 
+ // maybe rename this?
 
 /// @brief Will loop until the end of tokens or a pipe. It will gather the
 /// command and args and any redirects with associated in or outfile and return
-/// as an ast. Per loop, WORD's are appended with a space to command_and_args
+/// as an ast. Per loop, WORD's are appended with a space to cmd_str
 /// else (redirect case) 
 /// @param tokens 
 /// @param i 
 /// @return 
-static t_ast_node	*set_command_and_args(t_token *tokens, int *i)
+static t_ast_node	*set_cmd_str(t_token *tokens, int *i)
 {
 	t_ast_node	*root;
 	t_ast_node	*parent_redirect;
 
-	root = create_node(NODE_COMMAND, NULL, NULL, NULL);
+	root = create_node(NODE_CMD, NULL, NULL, NULL);
 	if (root == NULL)
 		return (NULL);
 	while (tokens[*i].type != TOKEN_NONE && tokens[*i].type != TOKEN_PIPE)
@@ -94,7 +96,7 @@ static t_ast_node	*set_command_and_args(t_token *tokens, int *i)
 		if (tokens[*i].type == TOKEN_WORD)
 		{
 			if (append_word(root, tokens[*i].value) == -1)
-				return (free(root), NULL);
+				return (free_ast(root), NULL);
 		}
 		else
 		{
@@ -114,5 +116,5 @@ command = command_name {redirect | argument}
 */
 t_ast_node	*parse_command(t_token *tokens, int *i)
 {
-	return (set_command_and_args(tokens, i));
+	return (set_cmd_str(tokens, i));
 }

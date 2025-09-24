@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:28:54 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/10 15:38:35 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/24 16:18:33 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void print_node_box(t_ast_node *node, int depth)
     printf("%*s│ Type: ", depth * 4, "");
     switch (node->node_type)
     {
-        case NODE_COMMAND:
+        case NODE_CMD:
             printf("COMMAND         \n");
             break;
         case NODE_PIPE:
@@ -59,10 +59,10 @@ void print_node_box(t_ast_node *node, int depth)
 
     
     // Args array (if exists)
-    if (node->command_and_args)
+    if (node->cmd_str)
     {
-        printf("command_and_args: [");
-		printf("\"%s\"", node->command_and_args);
+        printf("cmd_str: [");
+		printf("\"%s\"", node->cmd_str);
         printf("]│\n");
     }
     else
@@ -215,8 +215,8 @@ void test_parse_executable()
     t_ast_node *ast1 = parse_executable(tokens1, &i);
 	assert(ast1->node_type == NODE_REDIRECT_OUT);
 	assert(strcmp(ast1->redirect_file, "out.txt") == 0);
-	assert(ast1->left->node_type == NODE_COMMAND);
-	assert(strcmp(ast1->left->command_and_args, "ls") == 0);
+	assert(ast1->left->node_type == NODE_CMD);
+	assert(strcmp(ast1->left->cmd_str, "ls") == 0);
 	
 
 	////////////////////////
@@ -293,7 +293,7 @@ void	test_parse_pipeline()
         {TOKEN_WORD, "1"},
         {TOKEN_NONE, NULL}
     };
-    printf("Test 3: ls | wc | grep 1\n\n");
+    printf("Test 3: ls > outfile wc | grep 1\n\n");
     i = 0;
     t_ast_node *ast3 = parse_pipeline(tokens3, &i);
     print_ast(ast3);
@@ -306,9 +306,9 @@ void	test_parse_pipeline()
 
 
 	assert(left->node_type == NODE_PIPE);
-	assert(right->node_type == NODE_COMMAND && strcmp(right->command_and_args, "grep 1") == 0);
-	assert(left_left->node_type == NODE_COMMAND && strcmp(left_left->command_and_args, "ls") == 0);
-	assert(left_right->node_type == NODE_COMMAND && strcmp(left_right->command_and_args, "wc") == 0);
+	assert(right->node_type == NODE_CMD && strcmp(right->cmd_str, "grep 1") == 0);
+	assert(left_left->node_type == NODE_CMD && strcmp(left_left->cmd_str, "ls") == 0);
+	assert(left_right->node_type == NODE_CMD && strcmp(left_right->cmd_str, "wc") == 0);
 
 
 }
@@ -336,9 +336,9 @@ void	test_create_ast()
 	t_ast_node	*left_right = ast1->left->right;
 	assert(ast1->node_type == NODE_PIPE);
 	assert(left->node_type == NODE_PIPE);
-	assert(right->node_type == NODE_COMMAND && strcmp(right->command_and_args, "grep 1") == 0);
-	assert(left_left->node_type == NODE_COMMAND && strcmp(left_left->command_and_args, "ls") == 0);
-	assert(left_right->node_type == NODE_COMMAND && strcmp(left_right->command_and_args, "wc") == 0);
+	assert(right->node_type == NODE_CMD && strcmp(right->cmd_str, "grep 1") == 0);
+	assert(left_left->node_type == NODE_CMD && strcmp(left_left->cmd_str, "ls") == 0);
+	assert(left_right->node_type == NODE_CMD && strcmp(left_right->cmd_str, "wc") == 0);
 	printf("%i %s passed!\n\n", i++, line1);
 
 
@@ -349,7 +349,7 @@ void	test_create_ast()
 	t_ast_node *ast2 = create_ast(line2);
 	t_ast_node	*left2 = ast2->left;
 	assert(ast2->node_type == NODE_REDIRECT_OUT && strcmp(ast2->redirect_file, "out.txt") == 0);
-	assert(left2->node_type == NODE_COMMAND && strcmp(left2->command_and_args, "ls") == 0);
+	assert(left2->node_type == NODE_CMD && strcmp(left2->cmd_str, "ls") == 0);
 	printf("%i %s passed!\n\n", i++, line2);
 
 	//////////////////////////
@@ -359,7 +359,7 @@ void	test_create_ast()
 	// t_ast_node *ast3 = create_ast(line3);
 	// t_ast_node	*left3 = ast2->left;
 	// assert(ast3->node_type == NODE_PIPE);
-	// assert(left3->node_type == NODE_COMMAND && str);
+	// assert(left3->node_type == NODE_CMD && str);
 
 	// printf("%i %s passed!\n\n", i++, line3);
 
@@ -373,8 +373,8 @@ void	test_create_ast()
 
 	assert(ast4->node_type == NODE_PIPE);
 	assert(left4->node_type == NODE_REDIRECT_OUT && strcmp(left4->redirect_file, "./outfiles/outfile01") == 0);
-	assert(left_left4->node_type == NODE_COMMAND && strcmp(left_left4->command_and_args, "/bin/echo hi") == 0);
-	assert(right4->node_type == NODE_COMMAND && strcmp(right4->command_and_args, "/bin/echo bye") == 0);
+	assert(left_left4->node_type == NODE_CMD && strcmp(left_left4->cmd_str, "/bin/echo hi") == 0);
+	assert(right4->node_type == NODE_CMD && strcmp(right4->cmd_str, "/bin/echo bye") == 0);
 
 
 

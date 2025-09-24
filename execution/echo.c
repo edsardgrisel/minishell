@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:13:55 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/22 14:35:05 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/24 12:41:36 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,19 +94,19 @@ char	*get_str_to_print_and_set_n_flag(char *args, int *n_flag)
 
 void	exec_echo(t_ast_node *ast_node, t_minishell_info *minishell_info)
 {
-	char	*command_and_args;
+	char	*cmd_str;
 	char	*args;
 	char	*str_to_print;
 	int		i;
 	int		n_flag;
 
-	command_and_args = ast_node->command_and_args;
+	cmd_str = ast_node->cmd_str;
 	i = 0;
-	while ((command_and_args[i]) != ' ' && command_and_args[i])
+	while ((cmd_str[i]) != ' ' && cmd_str[i])
 		i++;
-	if (command_and_args[i])
+	if (cmd_str[i])
 		i++;
-	args = &(command_and_args[i]);
+	args = &(cmd_str[i]);
 	n_flag = 0;
 	str_to_print = get_str_to_print_and_set_n_flag(args, &n_flag);
 	if (str_to_print)

@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:13:57 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/22 16:09:43 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/24 12:41:47 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,13 +27,13 @@ void	exit_cleanup(t_minishell_info *minishell_info)
 /// @param minishell_info 
 void	exec_exit(t_ast_node *ast_node, t_minishell_info *minishell_info)
 {
-	char	*command_and_args;
+	char	*cmd_str;
 	int		len;
 	int		exit_code;
 
 	exit_code = 0;
-	command_and_args = ast_node->command_and_args;
-	len = ft_strlen(command_and_args);
+	cmd_str = ast_node->cmd_str;
+	len = ft_strlen(cmd_str);
 	if (len == 4)
 	{
 		exit_code = minishell_info->cur_exit_code;
@@ -41,7 +41,7 @@ void	exec_exit(t_ast_node *ast_node, t_minishell_info *minishell_info)
 	else if (len > 5)
 	{
 		// check overflows here?
-		exit_code = ft_atoi(&(command_and_args[5]));
+		exit_code = ft_atoi(&(cmd_str[5]));
 		// if atoi error do
 	}
 	exit_cleanup(minishell_info);

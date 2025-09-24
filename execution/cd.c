@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 15:49:04 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/22 16:33:52 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/24 12:41:16 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,18 +21,18 @@
 /// @param minishell_info 
 void	exec_cd(t_ast_node *ast_node, t_minishell_info *minishell_info)
 {
-	char	*command_and_args;
+	char	*cmd_str;
 	int		len;
 
-	command_and_args = ast_node->command_and_args;
-	len = ft_strlen(command_and_args);
+	cmd_str = ast_node->cmd_str;
+	len = ft_strlen(cmd_str);
 	if (len == 2)
 	{
 		// if (chrdir(get_env("HOME")) );
 	}
 	else
 	{
-		if (chdir(&(command_and_args[3])) == -1)
+		if (chdir(&(cmd_str[3])) == -1)
 		{
 			perror("cd");
 			minishell_info->cur_exit_code = 1;

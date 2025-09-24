@@ -6,12 +6,9 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/23 14:55:09 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/24 14:33:52 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
-
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
@@ -34,14 +31,14 @@ typedef enum e_token_type
 
 typedef enum e_builtin_type
 {
-    BUILTIN_NONE = 0,
-    BUILTIN_ECHO,
-    BUILTIN_CD,
-    BUILTIN_PWD,
-    BUILTIN_EXPORT,
-    BUILTIN_UNSET,
-    BUILTIN_ENV,
-    BUILTIN_EXIT
+	BUILTIN_NONE = 0,
+	BUILTIN_ECHO,
+	BUILTIN_CD,
+	BUILTIN_PWD,
+	BUILTIN_EXPORT,
+	BUILTIN_UNSET,
+	BUILTIN_ENV,
+	BUILTIN_EXIT
 }	t_builtin_type;
 
 typedef struct s_token
@@ -67,7 +64,7 @@ typedef struct s_alloced_list
 typedef enum e_ast_node_type
 {
 	NODE_NONE,
-	NODE_COMMAND,
+	NODE_CMD,
 	NODE_PIPE,
 	NODE_REDIRECT_IN,
 	NODE_REDIRECT_OUT,
@@ -75,16 +72,30 @@ typedef enum e_ast_node_type
 	NODE_REDIRECT_APPEND,
 }	t_ast_node_type;
 
-/// @brief if node type is NODE_COMMAND, then command_and_args is a string with 
-/// spaces between command name and the args e.g "wc -l".
+typedef struct s_cmd_list
+{
+	char				*str;
+	struct s_cmd_list	*next;
+}	t_cmd_list;
+
+/// @brief if node type is NODE_CMD, cmd_str and cmd_list will exist (see below)
 /// If type is a redirect that requieres a redirect file, the filename as string
 /// is stored in redirect file
+/// @ cmd_str is the string deliminated with spaces of the
+/// command and the args. This can be easily passed as string to the pipex part.
+/// E.g "echo -n hello"
+/// @param redirect_file if type NODE_REDIRECT redirect_file contains file path
+/// @var heredoc_
+/// @var cmd_list is a t_cmd_list linked list that contains each word as a
+/// list element 
+/// E.g echo -> -n -> hello
 typedef struct s_ast_node
 {
-	t_ast_node_type	node_type;
-	char			*command_and_args;
-	char			*redirect_file;
-	char			*heredoc_delim;
+	t_ast_node_type		node_type;
+	char				*cmd_str;
+	char				*redirect_file;
+	char				*heredoc_delim;
+	t_cmd_list			*cmd_list;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
 	t_builtin_type		builtin_type;
@@ -108,28 +119,28 @@ t_ast_node	*parse(t_token *tokens);
 t_ast_node	*parse_command(t_token *tokens, int *i);
 void		cleanup_tokens(t_token *tokens);
 t_ast_node	*create_node(
-	t_ast_node_type node_type,
-	char *command_and_args,
-	char *redirect_file,
-	char *heredoc_delim
-);
-void	clear_ast(t_ast_node *root);
+				t_ast_node_type node_type,
+				char *cmd_str,
+				char *redirect_file,
+				char *heredoc_delim);
 t_ast_node	*parse_pipeline(t_token *tokens, int *i);
 t_ast_node	*create_ast(char *line);
 t_ast_node	*add_redirect_parent_node(
-	t_ast_node *root,
-	t_token *cur_token,
-	t_token *next_node);
+				t_ast_node *root,
+				t_token *cur_token,
+				t_token *next_node);
 t_ast_node	*parse_executable(t_token *tokens, int *i);
-void	free_ast(t_ast_node *ast);
+void		free_ast(t_ast_node *ast);
 
 // Execution
-int		execution(t_minishell_info *minishell_info);
-int		built_in_exec(t_ast_node *ast_node, t_minishell_info *minishell_info);
-void	exec_echo(t_ast_node *ast_node, t_minishell_info *minishell_info);
-void	exec_env(t_minishell_info *minishell_info);
-void	exec_pwd(t_minishell_info *minishell_info);
-void	exec_exit(t_ast_node *ast_node, t_minishell_info *minishell_info);
-void	exec_cd(t_ast_node *ast_node, t_minishell_info *minishell_info);
-void	exec_export(t_ast_node *ast_node, t_minishell_info *minishell_info);
+int			execution(t_minishell_info *minishell_info);
+int			built_in_exec(
+				t_ast_node *ast_node,
+				t_minishell_info *minishell_info);
+void		exec_echo(t_ast_node *ast_node, t_minishell_info *minishell_info);
+void		exec_env(t_minishell_info *minishell_info);
+void		exec_pwd(t_minishell_info *minishell_info);
+void		exec_exit(t_ast_node *ast_node, t_minishell_info *minishell_info);
+void		exec_cd(t_ast_node *ast_node, t_minishell_info *minishell_info);
+void		exec_export(t_ast_node *ast_node, t_minishell_info *minishell_info);
 #endif

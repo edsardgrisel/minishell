@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 14:30:05 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/23 16:42:34 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/24 12:41:57 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,11 @@ char	**ft_split_export(char *str)
 /// @param ast_node 
 /// @param minishell_info 
 /// @return exit code
-int	export_with_args(char *command_and_args, t_minishell_info *minishell_info)
+int	export_with_args(char *cmd_str, t_minishell_info *minishell_info)
 {
 	char	**args;
 	
-	args = ft_split_export(command_and_args);// check split for leaks
+	args = ft_split_export(cmd_str);// check split for leaks
 }
 
 /// @brief 
@@ -109,13 +109,13 @@ int	export_with_args(char *command_and_args, t_minishell_info *minishell_info)
 /// @param minishell_info 
 void	exec_export(t_ast_node *ast_node, t_minishell_info *minishell_info)
 {
-	char	*command_and_args;
+	char	*cmd_str;
 	int		exit_code;
 	
-	command_and_args = ast_node->command_and_args;
-	if (ft_strncmp(command_and_args, "export", 6) == 0)
+	cmd_str = ast_node->cmd_str;
+	if (ft_strncmp(cmd_str, "export", 6) == 0)
 		exit_code = export_no_args(*(minishell_info->envp));
 	else
-		exit_code = export_with_args(command_and_args, minishell_info->envp);
+		exit_code = export_with_args(cmd_str, minishell_info->envp);
 		
 }

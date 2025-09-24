@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:00:42 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/23 13:47:19 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/24 13:57:14 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ void	free_ast(t_ast_node *ast)
 		free_ast(ast->left);
 	if (ast->right)
 		free_ast(ast->right);
-	if (ast->command_and_args)
-		free(ast->command_and_args);
+	if (ast->cmd_str)
+		free(ast->cmd_str);
 	if (ast->heredoc_delim)
 		free(ast->heredoc_delim);
 	if (ast->redirect_file)
