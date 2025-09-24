@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/23 14:30:05 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/24 12:41:57 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/24 16:20:24 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,34 +74,34 @@ void	loop_until_unquoted_space(char *str, int *i)
 	}
 }
 
-char	**ft_split_export(char *str)
-{
-	int		len;
-	int		i;
-	char	**result;
+// char	**ft_split_export(char *str)
+// {
+// 	int		len;
+// 	int		i;
+// 	char	**result;
 
-	len = 0;
-	i = 0;
-	while (str[i])
-	{
-		loop_until_unquoted_space(str, &i);
-		len++;
-	}
-	result = ft_calloc(len + 1, sizeof(char *));
+// 	len = 0;
+// 	i = 0;
+// 	while (str[i])
+// 	{
+// 		loop_until_unquoted_space(str, &i);
+// 		len++;
+// 	}
+// 	result = ft_calloc(len + 1, sizeof(char *));
 	
-}
+// }
 
 /// @brief performs a split on the args and processes each env assignment
 /// individually
 /// @param ast_node 
 /// @param minishell_info 
 /// @return exit code
-int	export_with_args(char *cmd_str, t_minishell_info *minishell_info)
-{
-	char	**args;
+// int	export_with_args(char *cmd_str, char ***envp)
+// {
+// 	char	**args;
 	
-	args = ft_split_export(cmd_str);// check split for leaks
-}
+// 	args = ft_split_export(cmd_str);// check split for leaks
+// }
 
 /// @brief 
 /// check if strncmp is safe here
@@ -115,7 +115,7 @@ void	exec_export(t_ast_node *ast_node, t_minishell_info *minishell_info)
 	cmd_str = ast_node->cmd_str;
 	if (ft_strncmp(cmd_str, "export", 6) == 0)
 		exit_code = export_no_args(*(minishell_info->envp));
-	else
-		exit_code = export_with_args(cmd_str, minishell_info->envp);
+	// else
+		// exit_code = export_with_args(cmd_str, minishell_info->envp);
 		
 }
