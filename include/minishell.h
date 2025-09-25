@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/24 14:33:52 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:01:52 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,21 +72,20 @@ typedef enum e_ast_node_type
 	NODE_REDIRECT_APPEND,
 }	t_ast_node_type;
 
-typedef struct s_cmd_list
+typedef struct s_arg_list
 {
 	char				*str;
-	struct s_cmd_list	*next;
-}	t_cmd_list;
+	struct s_arg_list	*next;
+}	t_arg_list;
 
-/// @brief if node type is NODE_CMD, cmd_str and cmd_list will exist (see below)
+/// @brief if node type is NODE_CMD, cmd_str and cmargist will exist (see below)
 /// If type is a redirect that requieres a redirect file, the filename as string
 /// is stored in redirect file
-/// @ cmd_str is the string deliminated with spaces of the
+/// @param cmd_str is the string deliminated with spaces of the
 /// command and the args. This can be easily passed as string to the pipex part.
 /// E.g "echo -n hello"
 /// @param redirect_file if type NODE_REDIRECT redirect_file contains file path
-/// @var heredoc_
-/// @var cmd_list is a t_cmd_list linked list that contains each word as a
+/// @param arg_list is a t_arg_list linked list that contains each word as a
 /// list element 
 /// E.g echo -> -n -> hello
 typedef struct s_ast_node
@@ -95,7 +94,7 @@ typedef struct s_ast_node
 	char				*cmd_str;
 	char				*redirect_file;
 	char				*heredoc_delim;
-	t_cmd_list			*cmd_list;
+	t_arg_list			*arg_list;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
 	t_builtin_type		builtin_type;
@@ -131,6 +130,9 @@ t_ast_node	*add_redirect_parent_node(
 				t_token *next_node);
 t_ast_node	*parse_executable(t_token *tokens, int *i);
 void		free_ast(t_ast_node *ast);
+
+t_arg_list	*add_arg(t_arg_list *arg_list, char *arg_str);
+void		free_arg_list(t_arg_list *arg_list);
 
 // Execution
 int			execution(t_minishell_info *minishell_info);

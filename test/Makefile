@@ -1,17 +1,22 @@
 NAME=minishell_test
 CC=cc
 CFLAGS=-g
-SRCS= ../ft_strndup.c \
-    ../minishell.c \
-    ../parsing/parser.c \
-    ../parsing/tokenizer.c \
-	../parsing/parse_command.c \
+SRCS=../minishell.c \
+	../ft_strndup.c \
 	../ft_strjoin_char.c \
+	../parsing/parser.c \
+	../parsing/tokenizer.c \
+	../parsing/parse_command.c \
 	../parsing/parsing_cleanup.c \
 	../execution/echo.c \
 	../execution/execution.c \
 	../execution/pwd.c \
 	../execution/env.c \
+	../execution/exit.c \
+	../execution/cd.c \
+	../execution/env_helpers.c \
+	../execution/export.c \
+	../parsing/arg_list.c
 
 
 TEST_SRCS= test_tokens.c test.c test_parsing.c test_builtins.c
@@ -28,7 +33,7 @@ LIBFT_ARCHIVE=$(LIBFT_DIR)/libft.a
 
 all: libft $(NAME)
 
-$(NAME): $(OBJS) $(TEST_OBJS) Makefile
+$(NAME): $(TEST_OBJS) Makefile $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) $(TEST_OBJS) $(LIBFT_ARCHIVE) -lreadline -o $(NAME)
 
 %.o: %.c Makefile

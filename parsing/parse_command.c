@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:41:12 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/24 14:08:10 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:03:16 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ t_builtin_type	get_builtin_type(char *command_str)
 /// @brief reallocs and appends to_append to the ast_nodes cmd_str and
 /// frees the old cmd_str string. In case cmd_str is empty
 /// (first call of this function when the token is the command name), strdup
-/// TODO: will also add to_append to the linked list command_list
+/// TODO: will also add to_append to the linked list command_list if cmd_str
+/// non null
 /// @param result 
 /// @param to_append 
 /// @return 0 on success, -1 on failure
@@ -69,6 +70,7 @@ static int	append_word(t_ast_node *ast_node, char *to_append)
 			return (-1);
 		free(ast_node->cmd_str);
 		ast_node->cmd_str = temp;
+		ast_node->arg_list = add_arg(ast_node->arg_list, to_append);
 	}
 	return (0);
 }

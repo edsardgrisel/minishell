@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:28:54 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/24 16:18:33 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/09/25 15:17:47 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -303,13 +303,36 @@ void	test_parse_pipeline()
 	t_ast_node	*left_left = ast3->left->left;
 	t_ast_node	*left_right = ast3->left->right;
 
-
-
 	assert(left->node_type == NODE_PIPE);
 	assert(right->node_type == NODE_CMD && strcmp(right->cmd_str, "grep 1") == 0);
 	assert(left_left->node_type == NODE_CMD && strcmp(left_left->cmd_str, "ls") == 0);
 	assert(left_right->node_type == NODE_CMD && strcmp(left_right->cmd_str, "wc") == 0);
 
+
+
+	//////////////////////////
+	// // Test 4: export with many args
+	///////////////////////////
+    t_token tokens4[] = {
+        {TOKEN_WORD, "export"},
+        {TOKEN_WORD, "abc=hello"},
+        {TOKEN_WORD, "last_name=john"},
+        {TOKEN_NONE, NULL}
+    };
+    printf("Test 4: export abc=hello last_name=john\n\n");
+    i = 0;
+    t_ast_node *ast4 = parse_pipeline(tokens4, &i);
+    
+
+	t_arg_list	*first_arg4 = ast4->arg_list;
+	t_arg_list	*second_arg4 = first_arg4->next;
+	t_arg_list	*third_arg4 = second_arg4->next;
+
+
+
+	assert(strcmp(first_arg4->str, "abc=hello") == 0);
+	assert(strcmp(second_arg4->str, "last_name=john") == 0);
+	assert(third_arg4 == NULL);
 
 }
 
@@ -339,6 +362,10 @@ void	test_create_ast()
 	assert(right->node_type == NODE_CMD && strcmp(right->cmd_str, "grep 1") == 0);
 	assert(left_left->node_type == NODE_CMD && strcmp(left_left->cmd_str, "ls") == 0);
 	assert(left_right->node_type == NODE_CMD && strcmp(left_right->cmd_str, "wc") == 0);
+	
+	assert(strcmp(right->arg_list->str, "1") == 0);
+	assert(right->arg_list->next == NULL);
+
 	printf("%i %s passed!\n\n", i++, line1);
 
 

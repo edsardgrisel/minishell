@@ -8,6 +8,7 @@ SRCS= main.c \
 	parsing/parser.c \
 	parsing/tokenizer.c \
 	parsing/parse_command.c \
+	parsing/arg_list.c \
 	parsing/parsing_cleanup.c \
 	execution/echo.c \
 	execution/execution.c \
