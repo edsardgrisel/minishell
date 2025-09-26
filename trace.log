@@ -1,0 +1,60 @@
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 close(3)                          = 0
+35578 pipe2([3, 4], 0)                  = 0
+35578 clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7faafaecaa10) = 35579
+35578 close(4)                          = 0
+35578 close(4)                          = -1 EBADF (Bad file descriptor)
+35578 clone(child_stack=NULL, flags=CLONE_CHILD_CLEARTID|CLONE_CHILD_SETTID|SIGCHLD, child_tidptr=0x7faafaecaa10) = 35580
+35579 close(3)                          = 0
+35579 dup2(4, 1)                        = 1
+35579 close(4)                          = 0
+35580 dup2(3, 0 <unfinished ...>
+35578 close(3 <unfinished ...>
+35580 <... dup2 resumed>)               = 0
+35578 <... close resumed>)              = 0
+35580 close(3)                          = 0
+35579 +++ exited with 0 +++
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(3)                          = 0
+35580 close(0)                          = 0
+35580 close(1)                          = 0
+35580 close(2)                          = 0
+35580 +++ exited with 0 +++
+35578 close(3)                          = 0
+35578 close(3)                          = -1 EBADF (Bad file descriptor)
+35578 --- SIGCHLD {si_signo=SIGCHLD, si_code=CLD_EXITED, si_pid=35579, si_uid=217835, si_status=0, si_utime=0, si_stime=0} ---
+35578 +++ exited with 0 +++

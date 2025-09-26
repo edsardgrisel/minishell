@@ -6,7 +6,7 @@
 /*   By: jvan-ast <jvan-ast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 14:54:42 by jvan-ast          #+#    #+#             */
-/*   Updated: 2025/09/26 11:52:59 by jvan-ast         ###   ########.fr       */
+/*   Updated: 2025/09/26 12:42:49 by jvan-ast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,31 +52,33 @@ static void	cleanup(int fd[][2], int pipes)
 		;
 }
 
-void	pipex(unsigned int num_commands, char *command[], char *envp[])
+void create_child(char *command, int fd_write, int fd_listen, char *envp[])
 {
-	int					(*fd)[2];
+	int					pid;
+
+	pid = fork();
+	if (pid_ok(pid))
+		{
+			listen_pipe(fd_listen);
+			write_pipe(fd_write);
+			close(fd_write);
+			close(fd_listen);
+			execute_program(command, envp);
+		}
+}
+
+void	pipex(char *command[], int fd_pipe[2], char *envp[])
+{
+	int					next_fd[2];
 	int					pid;
 	unsigned int		i;
 
 	i = 0;
-	fd = malloc(sizeof(int [num_commands - 1][2]));
-	if (!fd)
-		return (free(fd), perror("Malloc error 3"), exit(errno));
-	while (i < num_commands)
-	{
-		if (i < num_commands - 1 && pipe(fd[i]) == -1)
-			return (perror("pipe"), cleanup(fd, i), exit(errno));
-		pid = fork();
-		if (pid_ok(pid))
-		{
-			if (i > 0)
-				listen_pipe(fd[i - 1]);
-			if (i < num_commands - 1)
-				write_pipe(fd[i]);
-			close_until(fd, num_commands - 1, i);
-			execute_program(command[i], envp);
-		}
-		i++;
-	}
-	cleanup(fd, num_commands - 1);
+	
+	pipe(next_fd);
+	create_child(command[i], next_fd[1], fd_pipe[0], envp);
+	close(fd_pipe[0]);
+	close(next_fd[1]);
+	fd_pipe[0] = next_fd[0];
+	pipex(command+1, fd_pipe, envp);
 }
