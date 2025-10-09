@@ -1,6 +1,7 @@
 NAME=minishell
 CC=cc
 CFLAGS=-Wall -Wextra -Werror -g
+LIBFT		:= ./lib/libft
 SRCS= main.c \
 	minishell.c \
 	ft_strndup.c \
@@ -19,13 +20,13 @@ SRCS= main.c \
 	execution/env_helpers.c \
 	execution/export.c
 
-
+VPATH 		:= $(shell find src -type d)
 OBJS = $(SRCS:.c=.o)
 
-HEADERS=-I libft -I include
+HEADERS= -I include \
+		 -I $(LIBFT)/include \
 
-LIBFT_DIR=./libft
-LIBFT_ARCHIVE=$(LIBFT_DIR)/libft.a
+LIBFT_ARCHIVE=$(LIBFT)/libft.a
 
 .PHONY: all clean fclean re bonus libft
 
@@ -38,7 +39,7 @@ $(NAME): $(OBJS) libft Makefile
 	$(CC) $(CFLAGS) $(HEADERS) -c $< -o $@
 
 libft:
-	$(MAKE) -s -C $(LIBFT_DIR) bonus
+	$(MAKE) -s -C $(LIBFT) bonus
 
 clean:
 	@rm -f $(OBJS)
