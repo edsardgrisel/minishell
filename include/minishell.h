@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/25 15:01:52 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/09 14:02:33 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,9 @@ typedef struct s_ast_node
 {
 	t_ast_node_type		node_type;
 	char				*cmd_str;
+	char				**cmd_list;
 	char				*redirect_file;
 	char				*heredoc_delim;
-	t_arg_list			*arg_list;
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
 	t_builtin_type		builtin_type;
@@ -109,8 +109,7 @@ typedef struct s_minishell_info
 }	t_minishell_info;
 
 int			minishell(t_minishell_info *minishell_info);
-char		*ft_strjoin_char(char const *s1, char const *s2, char c);
-char		*ft_strndup(char *str, int n);
+
 
 // Parsing
 t_token		*tokenize(char *str);
@@ -145,4 +144,11 @@ void		exec_pwd(t_minishell_info *minishell_info);
 void		exec_exit(t_ast_node *ast_node, t_minishell_info *minishell_info);
 void		exec_cd(t_ast_node *ast_node, t_minishell_info *minishell_info);
 void		exec_export(t_ast_node *ast_node, t_minishell_info *minishell_info);
+
+
+// Helpers
+char	**ft_str_list_join(char **str_list, char *str_to_join);
+char		*ft_strjoin_char(char const *s1, char const *s2, char c);
+char		*ft_strndup(char *str, int n);
+
 #endif

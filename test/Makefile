@@ -1,32 +1,20 @@
 NAME=minishell_test
 CC=cc
 CFLAGS=-g
-SRCS=../minishell.c \
-	../ft_strndup.c \
-	../ft_strjoin_char.c \
-	../parsing/parser.c \
-	../parsing/tokenizer.c \
-	../parsing/parse_command.c \
-	../parsing/parsing_cleanup.c \
-	../execution/echo.c \
-	../execution/execution.c \
-	../execution/pwd.c \
-	../execution/env.c \
-	../execution/exit.c \
-	../execution/cd.c \
-	../execution/env_helpers.c \
-	../execution/export.c \
-	../parsing/arg_list.c
+SRCS=../src/minishell.c \
+	$(wildcard ../src/execution/*.c) \
+	$(wildcard ../src/helpers/*.c) \
+	$(wildcard ../src/Parser/*.c)
 
 
 TEST_SRCS= test_tokens.c test.c test_parsing.c test_builtins.c
 
-HEADERS=-I ../libft -I ../include -I include -I ../parsing -I ../
+HEADERS=-I ../lib/libft/include -I ../include -I include -I ../src/Parser -I ../src
 
 OBJS = $(SRCS:.c=.o)
 TEST_OBJS = $(TEST_SRCS:.c=.o)
 
-LIBFT_DIR=../libft
+LIBFT_DIR=../lib/libft
 LIBFT_ARCHIVE=$(LIBFT_DIR)/libft.a
 
 .PHONY: all clean fclean re libft

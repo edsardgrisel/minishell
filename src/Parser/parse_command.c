@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:41:12 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/25 15:03:16 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/09 14:39:36 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,33 +44,59 @@ t_builtin_type	get_builtin_type(char *command_str)
 	return (BUILTIN_NONE);
 }
 
-/// @brief reallocs and appends to_append to the ast_nodes cmd_str and
-/// frees the old cmd_str string. In case cmd_str is empty
-/// (first call of this function when the token is the command name), strdup
-/// TODO: will also add to_append to the linked list command_list if cmd_str
-/// non null
+// /// @brief reallocs and appends to_append to the ast_nodes cmd_str and
+// /// frees the old cmd_str string. In case cmd_str is empty
+// /// (first call of this function when the token is the command name), strdup
+// /// TODO: will also add to_append to the linked list command_list if cmd_str
+// /// non null
+// /// @param result 
+// /// @param to_append 
+// /// @return 0 on success, -1 on failure
+// static int	append_word_to_cmd_string(t_ast_node *ast_node, char *to_append)
+// {
+// 	char	*temp;
+
+// 	if (ast_node->cmd_str == NULL)
+// 	{
+// 		ast_node->cmd_str = ft_strdup(to_append);
+// 		if (ast_node->cmd_str == NULL)
+// 			return (-1);
+// 		ast_node->builtin_type = get_builtin_type(ast_node->cmd_str);
+// 	}
+// 	else
+// 	{
+// 		temp = ft_strjoin_char(ast_node->cmd_str, to_append, ' ');
+// 		if (temp == NULL)
+// 			return (-1);
+// 		free(ast_node->cmd_str);
+// 		ast_node->cmd_str = temp;
+// 	}
+// 	return (0);
+// }
+
+/// @brief will build the ast_node->cmd_list with dynamic reallocation
 /// @param result 
 /// @param to_append 
 /// @return 0 on success, -1 on failure
-static int	append_word(t_ast_node *ast_node, char *to_append)
+static int	append_word_to_cmd_list(t_ast_node *ast_node, char *to_append)
 {
-	char	*temp;
+	char	**temp;
 
-	if (ast_node->cmd_str == NULL)
+	if (ast_node->cmd_list == NULL)
 	{
-		ast_node->cmd_str = ft_strdup(to_append);
-		if (ast_node->cmd_str == NULL)
+		ast_node->cmd_list = ft_calloc(2, sizeof(char *));
+		if (ast_node->cmd_list == NULL)
 			return (-1);
-		ast_node->builtin_type = get_builtin_type(ast_node->cmd_str);
+		ast_node->cmd_list[0] = to_append;
+		ast_node->builtin_type = get_builtin_type(ast_node->cmd_list[0]);
 	}
 	else
 	{
-		temp = ft_strjoin_char(ast_node->cmd_str, to_append, ' ');
+		temp = ft_str_list_join(ast_node->cmd_list, to_append);
 		if (temp == NULL)
 			return (-1);
-		free(ast_node->cmd_str);
-		ast_node->cmd_str = temp;
-		ast_node->arg_list = add_arg(ast_node->arg_list, to_append);
+		free(ast_node->cmd_list);
+		ast_node->cmd_list = temp;
 	}
 	return (0);
 }
@@ -97,7 +123,7 @@ static t_ast_node	*set_cmd_str(t_token *tokens, int *i)
 	{
 		if (tokens[*i].type == TOKEN_WORD)
 		{
-			if (append_word(root, tokens[*i].value) == -1)
+			if (append_word_to_cmd_list(root, tokens[*i].value) == -1)
 				return (free_ast(root), NULL);
 		}
 		else

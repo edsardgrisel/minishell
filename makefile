@@ -17,10 +17,10 @@ SRCS		:= 	main_minishell.c \
 				minishell.c \
 				ft_strndup.c \
 				ft_strjoin_char.c \
+				ft_str_list_join.c \
 				parser.c \
 				tokenizer.c \
 				parse_command.c \
-				arg_list.c \
 				parsing_cleanup.c \
 				echo.c \
 				execution.c \

@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:28:54 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/25 15:17:47 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/09 14:41:38 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -143,6 +143,13 @@ void test_parse_command()
     i = 0;
     t_ast_node *ast1 = parse_command(tokens1, &i);
     print_ast(ast1);
+	assert(ast1->builtin_type == BUILTIN_NONE);
+	assert(ast1->node_type == NODE_CMD);
+	assert(strcmp(ast1->cmd_list[0], "ls") == 0);
+	assert(strcmp(ast1->cmd_list[1], "-l") == 0);
+	assert(ast1->cmd_list[2] == 0);
+
+
 	
 	
     //////////////////////////////////
@@ -158,7 +165,25 @@ void test_parse_command()
     printf("Test 2: cat file.txt > output.txt\n");
     i = 0;
     t_ast_node *ast2 = parse_command(tokens2, &i);
-    print_ast(ast2);
+    // print_ast(ast2);
+	
+	assert(ast2->node_type == NODE_REDIRECT_OUT);
+    assert(strcmp(ast2->redirect_file, "output.txt") == 0);
+    assert(ast2->cmd_str == NULL);
+    assert(ast2->cmd_list == NULL);
+    assert(ast2->heredoc_delim == NULL);
+    assert(ast2->builtin_type == BUILTIN_NONE);
+    assert(ast2->right == NULL);
+    // Check left child (the command part)
+    assert(ast2->left != NULL);
+    assert(ast2->left->node_type == NODE_CMD);
+    assert(strcmp(ast2->left->cmd_list[0], "cat") == 0);
+    assert(strcmp(ast2->left->cmd_list[1], "file.txt") == 0);
+    assert(ast2->left->cmd_list[2] == NULL);
+    assert(ast2->left->builtin_type == BUILTIN_NONE);
+    assert(ast2->left->redirect_file == NULL);
+    assert(ast2->left->left == NULL);
+    assert(ast2->left->right == NULL);
     
 	
 	/////////////////////////
@@ -324,15 +349,6 @@ void	test_parse_pipeline()
     t_ast_node *ast4 = parse_pipeline(tokens4, &i);
     
 
-	t_arg_list	*first_arg4 = ast4->arg_list;
-	t_arg_list	*second_arg4 = first_arg4->next;
-	t_arg_list	*third_arg4 = second_arg4->next;
-
-
-
-	assert(strcmp(first_arg4->str, "abc=hello") == 0);
-	assert(strcmp(second_arg4->str, "last_name=john") == 0);
-	assert(third_arg4 == NULL);
 
 }
 
@@ -363,8 +379,6 @@ void	test_create_ast()
 	assert(left_left->node_type == NODE_CMD && strcmp(left_left->cmd_str, "ls") == 0);
 	assert(left_right->node_type == NODE_CMD && strcmp(left_right->cmd_str, "wc") == 0);
 	
-	assert(strcmp(right->arg_list->str, "1") == 0);
-	assert(right->arg_list->next == NULL);
 
 	printf("%i %s passed!\n\n", i++, line1);
 
