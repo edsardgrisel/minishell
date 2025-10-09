@@ -6,7 +6,7 @@
 /*   By: jvan-ast <jvan-ast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 14:54:42 by jvan-ast          #+#    #+#             */
-/*   Updated: 2025/09/26 14:33:35 by jvan-ast         ###   ########.fr       */
+/*   Updated: 2025/10/09 11:08:49 by jvan-ast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,8 +47,7 @@ void	pipex(char *command[], int fd_pipe[2], int end, char *envp[])
 	{
 		pipe(next_fd);
 		create_child(command[0], next_fd, fd_pipe[0], envp);
-		if (fd_pipe[0] != 0)
-			close(fd_pipe[0]);
+		close(fd_pipe[0]);
 		close(next_fd[1]);
 		fd_pipe[0] = next_fd[0];
 		pipex(command + 1, fd_pipe, end - 1, envp);
