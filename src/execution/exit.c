@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/22 13:13:57 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/24 12:41:47 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:13:28 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,21 +27,21 @@ void	exit_cleanup(t_minishell_info *minishell_info)
 /// @param minishell_info 
 void	exec_exit(t_ast_node *ast_node, t_minishell_info *minishell_info)
 {
-	char	*cmd_str;
-	int		len;
+	char	**cmd_list;
 	int		exit_code;
 
 	exit_code = 0;
-	cmd_str = ast_node->cmd_str;
-	len = ft_strlen(cmd_str);
-	if (len == 4)
+	cmd_list = ast_node->cmd_list;
+	// potential out of bounds error?
+	if (cmd_list[1] == NULL)
 	{
 		exit_code = minishell_info->cur_exit_code;
 	}
-	else if (len > 5)
+	else
 	{
+		// todo: what to do when more than one arg?
 		// check overflows here?
-		exit_code = ft_atoi(&(cmd_str[5]));
+		exit_code = ft_atoi(cmd_list[1]);
 		// if atoi error do
 	}
 	exit_cleanup(minishell_info);
