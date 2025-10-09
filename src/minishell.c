@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
+/*   By: jvan-ast <jvan-ast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 13:14:20 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/23 14:00:01 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/09 17:53:09 by jvan-ast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <stdio.h>
 #include <readline/readline.h>
 #include <readline/history.h>
-
+#include "pipex.h"
 /// @brief tokens alloced and set, ast calculated and tokens freed after.
 /// @param line 
 /// @return the abstract syntax tree for exec
@@ -53,6 +53,7 @@ int	minishell(t_minishell_info *minishell_info)
 	if (ast == NULL)
 		return (-1);
 	minishell_info->ast = ast;
+	pipex_test(ast, 1, 0, *(minishell_info->envp));
 	result = execution(minishell_info);
 	free_ast(ast);
 	return (result);
