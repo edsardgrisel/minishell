@@ -6,13 +6,17 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 13:48:40 by egrisel           #+#    #+#             */
-/*   Updated: 2025/10/09 15:15:22 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/09 15:58:14 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "libft.h"
 
+/// @brief 
+/// @param str_list 
+/// @param str_to_join alloced string
+/// @return 
 char	**ft_str_list_join(char **str_list, char *str_to_join)
 {
 	int		str_list_len;

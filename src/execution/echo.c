@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/09 13:13:55 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/24 12:41:36 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/09 16:06:37 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,19 +16,21 @@
 
 // Will check if it is a valid n flag. a valid n flag is minus follow by 1 or
 // more n's only
-int	is_valid_n_flag(char *str, int *i)
+int	is_valid_n_flag(char *str)
 {
 	int	n_flag;
+	int	i;
 
 	n_flag = 0;
-	if (str[(*i)++] == '-')
+	i = 0;
+	if (str[(i)++] == '-')
 	{
-		while (str[*i] == 'n')
+		while (str[i] == 'n')
 		{
 			n_flag = 1;
-			(*i)++;
+			(i)++;
 		}
-		if (str[*i] == ' ' || str[*i] == '\0')
+		if (str[i] == ' ' || str[i] == '\0')
 			return (n_flag);
 		else
 			return (0);
@@ -37,81 +39,91 @@ int	is_valid_n_flag(char *str, int *i)
 		return (0);
 }
 
-/// @brief will set n_flag and returns the string after the flag and echo
-/// @param args string of args and optional n flag
-/// @param is_n_flag flag pointer so exec_echo knows to print a trailing "\n" or
-/// not
-/// @return string to print in echo. In n_flag case, return string starting 
-/// after the space after the flags. if there is no string to print, return NULL
-char	*get_str_to_print_and_set_n_flag(char *args, int *n_flag)
+// /// @brief will set n_flag and returns the string after the flag and echo
+// /// @param args string of args and optional n flag
+// /// @param is_n_flag flag pointer so exec_echo knows to print a trailing "\n" or
+// /// not
+// /// @return string to print in echo. In n_flag case, return string starting 
+// /// after the space after the flags. if there is no string to print, return NULL
+// char	*get_str_to_print_and_set_n_flag(char *args, int *n_flag)
+// {
+// 	int		i;
+// 	char	*cur_args_ptr;
+
+// 	i = 0;
+// 	while(args[i] != '\0')
+// 	{
+// 		while (args[i] == ' ')
+// 			i++;
+// 		cur_args_ptr = &(args[i]);
+// 		if (is_valid_n_flag(args, &i))
+// 		{
+// 			*n_flag = 1;
+// 		}
+// 		else
+// 		{
+// 			return (cur_args_ptr);
+// 		}
+// 	}
+// 	return (NULL);
+
+
+
+// 	// i = 0;
+// 	// while(args[i] != '\0' && args[i] != ' ')
+// 	// {
+// 	// 	if (args[i] == '-')
+// 	// 	{
+// 	// 		if (minus_encountered)
+// 	// 		{
+// 	// 			*n_flag = 0;
+// 	// 			return (args);
+// 	// 		}
+// 	// 		minus_encountered = 1;
+// 	// 	}
+// 	// 	else if (args[i] == 'n')
+// 	// 		*n_flag = 1;
+// 	// 	else
+// 	// 		*n_flag = 0;
+// 	// 	i++;
+// 	// }
+// 	// if (*n_flag && args[i] == ' ')
+// 	// 	return (&(args[i + 1]));
+// 	// if (*n_flag && args[i] == '\0')
+// 	// 	return (&(args[i]));
+// 	// return (args);
+// }
+
+void	print_echo_message(char **cmd_list, int *i)
 {
-	int		i;
-	char	*cur_args_ptr;
-
-	i = 0;
-	while(args[i] != '\0')
+	while (cmd_list[*i])
 	{
-		while (args[i] == ' ')
-			i++;
-		cur_args_ptr = &(args[i]);
-		if (is_valid_n_flag(args, &i))
-		{
-			*n_flag = 1;
-		}
-		else
-		{
-			return (cur_args_ptr);
-		}
+		write(1, cmd_list[*i], ft_strlen(cmd_list[*i]));
+		if (cmd_list[*i + 1])
+			write(1, " ", 1);
+		(*i)++;
 	}
-	return (NULL);
-
-
-
-	// i = 0;
-	// while(args[i] != '\0' && args[i] != ' ')
-	// {
-	// 	if (args[i] == '-')
-	// 	{
-	// 		if (minus_encountered)
-	// 		{
-	// 			*n_flag = 0;
-	// 			return (args);
-	// 		}
-	// 		minus_encountered = 1;
-	// 	}
-	// 	else if (args[i] == 'n')
-	// 		*n_flag = 1;
-	// 	else
-	// 		*n_flag = 0;
-	// 	i++;
-	// }
-	// if (*n_flag && args[i] == ' ')
-	// 	return (&(args[i + 1]));
-	// if (*n_flag && args[i] == '\0')
-	// 	return (&(args[i]));
-	// return (args);
 }
 
 void	exec_echo(t_ast_node *ast_node, t_minishell_info *minishell_info)
 {
-	char	*cmd_str;
-	char	*args;
-	char	*str_to_print;
+	char	**cmd_list;
 	int		i;
 	int		n_flag;
 
-	cmd_str = ast_node->cmd_str;
-	i = 0;
-	while ((cmd_str[i]) != ' ' && cmd_str[i])
-		i++;
-	if (cmd_str[i])
-		i++;
-	args = &(cmd_str[i]);
 	n_flag = 0;
-	str_to_print = get_str_to_print_and_set_n_flag(args, &n_flag);
-	if (str_to_print)
+	cmd_list = ast_node->cmd_list;
+	i = 1;
+	while (cmd_list[i])
 	{
-		write(1, str_to_print, ft_strlen(str_to_print));
+		if (is_valid_n_flag(cmd_list[i]) == 1)
+			n_flag = 1;
+		else
+		{
+			print_echo_message(cmd_list, &i);
+			break;
+		}
+		i++;
 	}
 	if (!n_flag)
 		write(1, "\n", 1);
