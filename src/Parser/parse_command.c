@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:41:12 by egrisel           #+#    #+#             */
-/*   Updated: 2025/10/09 14:48:29 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/09 15:59:15 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,18 +81,24 @@ t_builtin_type	get_builtin_type(char *command_str)
 static int	append_word_to_cmd_list(t_ast_node *ast_node, char *to_append)
 {
 	char	**temp;
-
+	char	*alloced_to_append;
+	
+	alloced_to_append = ft_strdup(to_append);
+	if (alloced_to_append == NULL)
+			return (-1);
 	if (ast_node->cmd_list == NULL)
 	{
 		ast_node->cmd_list = ft_calloc(2, sizeof(char *));
 		if (ast_node->cmd_list == NULL)
 			return (-1);
-		ast_node->cmd_list[0] = to_append;
+		ast_node->cmd_list[0] = alloced_to_append;
+		if (ast_node->cmd_list[0] == NULL)
+			return (free(ast_node->cmd_list), -1);
 		ast_node->builtin_type = get_builtin_type(ast_node->cmd_list[0]);
 	}
 	else
 	{
-		temp = ft_str_list_join(ast_node->cmd_list, to_append);
+		temp = ft_str_list_join(ast_node->cmd_list, alloced_to_append);
 		if (temp == NULL)
 			return (-1);
 		free(ast_node->cmd_list);
