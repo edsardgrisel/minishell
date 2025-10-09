@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:06:21 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/24 12:42:48 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/09 15:12:15 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,8 @@ t_ast_node_type	get_redirect_node_type(t_token *cur_token)
 	return (node_type);
 }
 
-/// @brief Add redirect parent node to the current root.
+/// @brief Add redirect parent node to the current root. sets old_root->parent 
+/// to the new parent
 /// @param root 
 /// @param cur_token 
 /// @param next_node 
@@ -62,6 +63,7 @@ t_ast_node	*add_redirect_parent_node(
 	else
 		redirect_file = next_node_value;
 	parent = create_node(node_type, NULL, redirect_file, heredoc_delim);
+	root->parent = parent;
 	if (parent == NULL)
 		return (free(redirect_file), NULL);
 	parent->left = root;
@@ -140,8 +142,10 @@ static t_ast_node	*add_parent_pipe_node(
 	parent_pipe = create_node(NODE_PIPE, NULL, NULL, NULL);
 	if (parent_pipe == NULL)
 		return (NULL);
+	root->parent = parent_pipe;
 	parent_pipe->left = root;
 	right_node = parse_executable(tokens, i);
+	right_node->parent = parent_pipe;
 	if (right_node == NULL)
 		return (free_ast(parent_pipe), NULL);
 	parent_pipe->right = right_node;
@@ -167,6 +171,7 @@ t_ast_node	*parse_pipeline(t_token *tokens, int *i)
 			parent_pipe = add_parent_pipe_node(root, tokens, i);
 			if (parent_pipe == NULL)
 				return (free_ast(root), NULL);
+			root->parent = parent_pipe;
 			root = parent_pipe;
 		}
 		else

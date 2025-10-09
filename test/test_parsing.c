@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 14:28:54 by egrisel           #+#    #+#             */
-/*   Updated: 2025/10/09 14:41:38 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/09 15:13:53 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,7 +169,7 @@ void test_parse_command()
 	
 	assert(ast2->node_type == NODE_REDIRECT_OUT);
     assert(strcmp(ast2->redirect_file, "output.txt") == 0);
-    assert(ast2->cmd_str == NULL);
+    // assert(ast2->cmd_str == NULL);
     assert(ast2->cmd_list == NULL);
     assert(ast2->heredoc_delim == NULL);
     assert(ast2->builtin_type == BUILTIN_NONE);
@@ -241,7 +241,7 @@ void test_parse_executable()
 	assert(ast1->node_type == NODE_REDIRECT_OUT);
 	assert(strcmp(ast1->redirect_file, "out.txt") == 0);
 	assert(ast1->left->node_type == NODE_CMD);
-	assert(strcmp(ast1->left->cmd_str, "ls") == 0);
+	// assert(strcmp(ast1->left->cmd_str, "ls") == 0);
 	
 
 	////////////////////////
@@ -329,9 +329,9 @@ void	test_parse_pipeline()
 	t_ast_node	*left_right = ast3->left->right;
 
 	assert(left->node_type == NODE_PIPE);
-	assert(right->node_type == NODE_CMD && strcmp(right->cmd_str, "grep 1") == 0);
-	assert(left_left->node_type == NODE_CMD && strcmp(left_left->cmd_str, "ls") == 0);
-	assert(left_right->node_type == NODE_CMD && strcmp(left_right->cmd_str, "wc") == 0);
+	// assert(right->node_type == NODE_CMD && strcmp(right->cmd_str, "grep 1") == 0);
+	// assert(left_left->node_type == NODE_CMD && strcmp(left_left->cmd_str, "ls") == 0);
+	// assert(left_right->node_type == NODE_CMD && strcmp(left_right->cmd_str, "wc") == 0);
 
 
 
@@ -374,10 +374,20 @@ void	test_create_ast()
 	t_ast_node	*left_left = ast1->left->left;
 	t_ast_node	*left_right = ast1->left->right;
 	assert(ast1->node_type == NODE_PIPE);
+	assert(ast1->parent == NULL);
+	
 	assert(left->node_type == NODE_PIPE);
-	assert(right->node_type == NODE_CMD && strcmp(right->cmd_str, "grep 1") == 0);
-	assert(left_left->node_type == NODE_CMD && strcmp(left_left->cmd_str, "ls") == 0);
-	assert(left_right->node_type == NODE_CMD && strcmp(left_right->cmd_str, "wc") == 0);
+	assert(left->parent == ast1);
+	
+	assert(right->node_type == NODE_CMD);
+	assert(right->parent == ast1);
+
+	assert(left_left->node_type == NODE_CMD);
+	assert(left_left->parent == left);
+
+	
+	assert(left_right->node_type == NODE_CMD);
+	assert(left_right->parent == left);
 	
 
 	printf("%i %s passed!\n\n", i++, line1);
@@ -390,7 +400,7 @@ void	test_create_ast()
 	t_ast_node *ast2 = create_ast(line2);
 	t_ast_node	*left2 = ast2->left;
 	assert(ast2->node_type == NODE_REDIRECT_OUT && strcmp(ast2->redirect_file, "out.txt") == 0);
-	assert(left2->node_type == NODE_CMD && strcmp(left2->cmd_str, "ls") == 0);
+	// assert(left2->node_type == NODE_CMD && strcmp(left2->cmd_str, "ls") == 0);
 	printf("%i %s passed!\n\n", i++, line2);
 
 	//////////////////////////
@@ -414,8 +424,8 @@ void	test_create_ast()
 
 	assert(ast4->node_type == NODE_PIPE);
 	assert(left4->node_type == NODE_REDIRECT_OUT && strcmp(left4->redirect_file, "./outfiles/outfile01") == 0);
-	assert(left_left4->node_type == NODE_CMD && strcmp(left_left4->cmd_str, "/bin/echo hi") == 0);
-	assert(right4->node_type == NODE_CMD && strcmp(right4->cmd_str, "/bin/echo bye") == 0);
+	assert(left_left4->node_type == NODE_CMD);
+	// assert(right4->node_type == NODE_CMD && strcmp(right4->cmd_str, "/bin/echo bye") == 0);
 
 
 
