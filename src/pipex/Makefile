@@ -14,7 +14,7 @@ NAME		:=	pipex
 HEADERS		:=	-I ./include \
 				-I $(LIBFT)/include \
 				-I $(LIBGTNXTLNE)/include
-				-I
+
 LIBS		:=	$(LIBFT)/libft.a
 OBJ_DIR		:=	build
 SRCS		:= 	main.c \

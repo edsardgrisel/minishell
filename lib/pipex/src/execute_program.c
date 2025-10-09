@@ -6,7 +6,7 @@
 /*   By: jvan-ast <jvan-ast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/01 15:09:59 by jvan-ast          #+#    #+#             */
-/*   Updated: 2025/10/09 18:22:02 by jvan-ast         ###   ########.fr       */
+/*   Updated: 2025/10/09 18:50:02 by jvan-ast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,7 +96,7 @@ void	execute_program(char **command, char *envp[])
 {
 	char	*path;
 
-	print_list_string(command);
+	// print_list_string(command);
 	if (command == NULL)
 		exit(EXIT_FAILURE);
 	path = find_program(command[0], envp);

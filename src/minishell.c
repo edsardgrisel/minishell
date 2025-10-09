@@ -6,7 +6,7 @@
 /*   By: jvan-ast <jvan-ast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 13:14:20 by egrisel           #+#    #+#             */
-/*   Updated: 2025/10/09 17:53:09 by jvan-ast         ###   ########.fr       */
+/*   Updated: 2025/10/09 18:35:26 by jvan-ast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,7 @@ int	minishell(t_minishell_info *minishell_info)
 	if (ast == NULL)
 		return (-1);
 	minishell_info->ast = ast;
+	// printf("command: %s", (ast->cmd_list)[0]);
 	pipex_test(ast, 1, 0, *(minishell_info->envp));
 	result = execution(minishell_info);
 	free_ast(ast);

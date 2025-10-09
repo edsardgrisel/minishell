@@ -6,7 +6,7 @@
 /*   By: jvan-ast <jvan-ast@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/04 14:54:42 by jvan-ast          #+#    #+#             */
-/*   Updated: 2025/10/09 18:19:46 by jvan-ast         ###   ########.fr       */
+/*   Updated: 2025/10/09 19:05:39 by jvan-ast         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,10 @@ void close_all_pipes(t_ast_node *nodes)
 {
 	if (nodes == NULL)
 		return ;
-	close(nodes->fd[0]);
-	close(nodes->fd[1]);
+	if (nodes->fd[0] != 0)
+		close(nodes->fd[0]);
+	if (nodes->fd[1] != 1)
+		close(nodes->fd[1]);
 	close_all_pipes(nodes->parent);
 }
 
@@ -46,16 +48,20 @@ static void create_child(t_ast_node *nodes, int fd_write, int fd_listen, char *e
 		close_all_pipes(nodes);
 		execute_program(nodes->cmd_list, envp);
 	}
+	if (fd_write != 1)
+		close(fd_write);
+	if (fd_listen != 0)
+		close(fd_listen);
 }
 
 void pipex_test(t_ast_node *nodes, int write_fd, int listen_fd, char *envp[])
 {
 	int fd[2];
 	
+	(nodes->fd)[0] = listen_fd;
+	(nodes->fd)[1] = write_fd;
 	if (nodes->node_type == NODE_CMD)
 	{	
-		printf("Write port: %d\nListen_port: %d\n", write_fd, listen_fd);
-		fflush(stdout);
 		create_child(nodes, write_fd, listen_fd, envp);
 		return ;
 	}
@@ -65,5 +71,9 @@ void pipex_test(t_ast_node *nodes, int write_fd, int listen_fd, char *envp[])
 	}
 	pipex_test(nodes->left, fd[1], listen_fd, envp);
 	pipex_test(nodes->right, write_fd, fd[0], envp);
+	if (listen_fd != 0)
+		close(listen_fd);
+	if (write_fd != 1)
+		close(write_fd);
 	return ;
 }
