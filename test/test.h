@@ -6,10 +6,11 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 13:44:50 by egrisel           #+#    #+#             */
-/*   Updated: 2025/09/10 14:32:36 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/10 13:31:23 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <assert.h>
 
 // Color codes
 # define COLOR_RESET    "\033[0m"

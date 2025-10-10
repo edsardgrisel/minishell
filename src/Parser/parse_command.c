@@ -6,13 +6,12 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/05 13:41:12 by egrisel           #+#    #+#             */
-/*   Updated: 2025/10/09 15:59:15 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/10 13:20:06 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <stdlib.h>
-#include "libft.h"
 
 /// @brief Gets the t_builtin_type of the command_str and checks if it ends with
 /// a space or null terminator. E.g "echo" and "echo " both returh BUILTIN_ECHO

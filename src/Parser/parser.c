@@ -6,12 +6,11 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:06:21 by egrisel           #+#    #+#             */
-/*   Updated: 2025/10/09 15:12:15 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/10 13:52:23 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "libft.h"
 #include <stdlib.h>
 
 t_ast_node_type	get_redirect_node_type(t_token *cur_token)
@@ -97,31 +96,34 @@ executable = {redirect}, command
 */
 t_ast_node	*parse_executable(t_token *tokens, int *i)
 {
-	t_ast_node	*root;
+	t_ast_node	*node;
 	t_ast_node	*command_node;
 
-	root = NULL;
+	
 	if (tokens[*i].type == TOKEN_REDIRECT_IN ||
 		tokens[*i].type == TOKEN_REDIRECT_OUT ||
 		tokens[*i].type == TOKEN_REDIRECT_HEREDOC ||
 		tokens[*i].type == TOKEN_REDIRECT_APPEND)
 	{
-		root = add_redirect_parent_node(
+		node = add_redirect_parent_node(
 			NULL, &(tokens[*i]), &(tokens[++(*i)]));
-		if (root == NULL)
-			return (free_ast(root), NULL);
+		if (node == NULL)
+			return (NULL);
 		/////// check tihs
 		(*i)++;
 		////////
 	}
+	else
+	{
+		node = create_node(NODE_CMD, NULL, NULL, NULL);
+		if (node == NULL)
+			return (NULL);
+	}
 	command_node = parse_command(tokens, i);
 	if (command_node == NULL)
 		return (NULL);
-	if (root != NULL)
-		root->left = command_node;
-	else
-		root = command_node;
-	return (root);
+	node->cmd_list = command_node->cmd_list;
+	return (node);
 }
 
 /// @brief will parse the pipe and link the left and right commands
@@ -154,30 +156,30 @@ static t_ast_node	*add_parent_pipe_node(
 
 /*
 pipeline = executable, {"|" executable}
+linked list as: (executable) --PIPE--> (executable) ...
 */
 t_ast_node	*parse_pipeline(t_token *tokens, int *i)
 {
-	t_ast_node	*root;
-	t_ast_node	*parent_pipe;
+	t_ast_node	*first_node;
+	t_ast_node	*prev_node;
+	t_ast_node	*cur_node;
 
 
-	root = parse_executable(tokens, i);
-
+	first_node = parse_executable(tokens, i);
+	cur_node = first_node;
 	while (tokens[*i].type != TOKEN_NONE)
 	{
 		if (tokens[*i].type == TOKEN_PIPE)
 		{
 			(*i)++;
-			parent_pipe = add_parent_pipe_node(root, tokens, i);
-			if (parent_pipe == NULL)
-				return (free_ast(root), NULL);
-			root->parent = parent_pipe;
-			root = parent_pipe;
+			prev_node = cur_node;
+			cur_node = parse_executable(tokens, i);
+			prev_node->next = cur_node;
 		}
 		else
 			break;
 	}
-	return (root);
+	return (first_node);
 }
 // ["ls", "|", "wc"]
 

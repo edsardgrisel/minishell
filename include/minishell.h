@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:54:02 by egrisel           #+#    #+#             */
-/*   Updated: 2025/10/09 15:41:28 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/10 13:28:39 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,9 @@
 # define MINISHELL_H
 
 # define TOKENS_SIZE 8
+
+#include "../lib/libft/include/libft.h"
+
 
 /// @brief NONE acts as a null terminator for t_token lists. so if list[i].type
 /// is NONE, it indicates that the previous token was the last element
@@ -98,6 +101,8 @@ typedef struct s_ast_node
 	struct s_ast_node	*left;
 	struct s_ast_node	*right;
 	struct s_ast_node	*parent;
+	struct s_ast_node	*next;
+	int					is_last;
 	int					fd[2];
 	t_builtin_type		builtin_type;
 

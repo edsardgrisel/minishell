@@ -4,12 +4,15 @@ CFLAGS=-g
 SRCS=../src/minishell.c \
 	$(wildcard ../src/execution/*.c) \
 	$(wildcard ../src/helpers/*.c) \
-	$(wildcard ../src/Parser/*.c)
+	$(wildcard ../src/Parser/*.c) \
+	$(filter-out ../src/pipex/src/main.c, $(wildcard ../src/pipex/src/*.c))
+
 
 
 TEST_SRCS= test_tokens.c test.c test_parsing.c test_builtins.c
 
-HEADERS=-I ../lib/libft/include -I ../include -I include -I ../src/Parser -I ../src
+HEADERS=-I ../lib/libft/include -I ../include -I include -I ../src/Parser -I ../src \
+	-I ../src/pipex/include
 
 OBJS = $(SRCS:.c=.o)
 TEST_OBJS = $(TEST_SRCS:.c=.o)
