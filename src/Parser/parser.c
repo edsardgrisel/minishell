@@ -6,7 +6,7 @@
 /*   By: egrisel <egrisel@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/25 15:06:21 by egrisel           #+#    #+#             */
-/*   Updated: 2025/10/09 15:12:15 by egrisel          ###   ########.fr       */
+/*   Updated: 2025/10/10 12:53:54 by egrisel          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,6 +162,8 @@ t_ast_node	*parse_pipeline(t_token *tokens, int *i)
 
 
 	root = parse_executable(tokens, i);
+	if (root == NULL)
+		return (NULL);
 
 	while (tokens[*i].type != TOKEN_NONE)
 	{
